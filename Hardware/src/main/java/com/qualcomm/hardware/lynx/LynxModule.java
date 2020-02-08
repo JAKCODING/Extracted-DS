@@ -1368,24 +1368,26 @@ public class LynxModule extends LynxCommExceptionHandler implements LynxModuleIn
      */
     public BulkData getBulkData()
         {
-        clearBulkCache();
-
-        LynxGetBulkInputDataCommand command = new LynxGetBulkInputDataCommand(this);
-        try
-            {
-            LynxGetBulkInputDataResponse response = command.sendReceive();
             synchronized (bulkCachingLock)
-                {
-                lastBulkData = new BulkData(response);
-                return lastBulkData;
-                }
-            }
-        catch (InterruptedException|RuntimeException|LynxNackException e)
             {
-            handleException(e);
-            }
+                clearBulkCache();
 
-        return LynxUsbUtil.makePlaceholderValue(new BulkData(new LynxGetBulkInputDataResponse(this)));
+                LynxGetBulkInputDataCommand command = new LynxGetBulkInputDataCommand(this);
+                try
+                {
+                    LynxGetBulkInputDataResponse response = command.sendReceive();
+                    lastBulkData = new BulkData(response);
+                    return lastBulkData;
+                }
+                catch (InterruptedException|RuntimeException|LynxNackException e)
+                {
+                    handleException(e);
+                }
+
+                BulkData placeholder = LynxUsbUtil.makePlaceholderValue(new BulkData(new LynxGetBulkInputDataResponse(this)));
+                lastBulkData = placeholder;
+                return placeholder;
+            }
         }
 
     /**
