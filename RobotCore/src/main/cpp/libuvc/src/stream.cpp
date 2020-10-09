@@ -437,10 +437,10 @@ uvc_get_stream_ctrl_format_size(uvc_device_handle* devh, /*out*/ uvc_stream_ctrl
 
                             for(uint32_t* pInterval = pFrame->rgIntervals+1; *pInterval; ++pInterval)
                                 {
-                                int32_t nextDistance = abs((int32_t)*(pFrame->rgIntervals) - fpsConvertedTo100NsInterval);
+                                int32_t nextDistance = abs((int32_t)*pInterval - fpsConvertedTo100NsInterval);
                                 if(nextDistance < distance)
                                     {
-                                    chosen = *(pFrame->rgIntervals);
+                                    chosen = *pInterval;
                                     distance = nextDistance;
                                     }
                                 }
