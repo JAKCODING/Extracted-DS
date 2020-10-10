@@ -6,7 +6,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+
 import com.qualcomm.ftcdriverstation.GamepadTypeOverrideMapper;
+
 import java.util.List;
 
 public class GamepadOverrideEntryAdapter extends BaseAdapter implements ListAdapter {

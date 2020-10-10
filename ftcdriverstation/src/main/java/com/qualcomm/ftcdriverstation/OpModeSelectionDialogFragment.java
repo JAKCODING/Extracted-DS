@@ -11,10 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
 
 public class OpModeSelectionDialogFragment extends DialogFragment {

@@ -8,6 +8,7 @@ import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.Toast;
+
 import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.ftcdriverstation.GamepadIndicator;
 import com.qualcomm.ftcdriverstation.GamepadTypeOverrideMapper;
@@ -16,6 +17,7 @@ import com.qualcomm.hardware.microsoft.MicrosoftGamepadXbox360;
 import com.qualcomm.hardware.sony.SonyGamepadPS4;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.RobotLog;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.firstinspires.ftc.robotcore.internal.ui.GamepadUser;
 import org.firstinspires.ftc.robotcore.internal.ui.RobotCoreGamepadManager;
 
@@ -140,13 +143,14 @@ public class GamepadManager implements RobotCoreGamepadManager, InputManager.Inp
     public synchronized void handleGamepadEvent(KeyEvent var1) {
 
         Throwable var10000;
-        label1235: {
+        label1235:
+        {
             InputDevice var2;
             Gamepad var3;
             boolean var10001;
             try {
                 var2 = InputDevice.getDevice(var1.getDeviceId());
-                var3 = (Gamepad)this.gamepadIdToGamepadMap.get(var2.getId());
+                var3 = (Gamepad) this.gamepadIdToGamepadMap.get(var2.getId());
             } catch (Throwable var156) {
                 var10000 = var156;
                 var10001 = false;
@@ -154,7 +158,8 @@ public class GamepadManager implements RobotCoreGamepadManager, InputManager.Inp
             }
 
             if (var3 != null) {
-                label1236: {
+                label1236:
+                {
                     try {
                         if (!var3.start || !var3.a && !var3.b) {
                             break label1236;

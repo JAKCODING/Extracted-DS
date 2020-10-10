@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
+
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class SelectGamepadMappingDialog extends AlertDialog.Builder {

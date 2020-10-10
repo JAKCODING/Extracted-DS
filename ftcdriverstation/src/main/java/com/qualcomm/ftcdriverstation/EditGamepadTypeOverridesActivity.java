@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import com.qualcomm.ftcdriverstation.GamepadTypeOverrideMapper;
 import com.qualcomm.ftcdriverstation.KeyEventCapturingProgressDialog;
 import com.qualcomm.ftcdriverstation.SelectGamepadMappingDialog;
@@ -17,6 +18,7 @@ import com.qualcomm.hardware.logitech.LogitechGamepadF310;
 import com.qualcomm.hardware.microsoft.MicrosoftGamepadXbox360;
 import com.qualcomm.hardware.sony.SonyGamepadPS4;
 import com.qualcomm.robotcore.hardware.Gamepad;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 

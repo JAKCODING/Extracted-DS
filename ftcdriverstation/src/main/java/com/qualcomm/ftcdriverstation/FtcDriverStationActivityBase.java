@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.qualcomm.ftccommon.ClassManagerFactory;
@@ -67,12 +68,14 @@ import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.util.RollingAverage;
 import com.qualcomm.robotcore.wifi.NetworkConnection;
 import com.qualcomm.robotcore.wifi.NetworkType;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
+
 import org.firstinspires.ftc.driverstation.internal.StopWatchDrawable;
 import org.firstinspires.ftc.ftccommon.external.SoundPlayingRobotMonitor;
 import org.firstinspires.ftc.ftccommon.internal.ProgramAndManageActivity;
@@ -440,7 +443,7 @@ public abstract class FtcDriverStationActivityBase extends ThemedActivity implem
         WAITING_FOR_START_EVENT("S"),
         WAITING_FOR_STOP_EVENT("P"),
         ROBOT_STOPPED("Z");
-        
+
         public final String indicator;
 
         private UIState(String str) {

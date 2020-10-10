@@ -3,8 +3,10 @@ package com.qualcomm.ftcdriverstation;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.firstinspires.ftc.robotcore.internal.system.Misc;
 import org.firstinspires.ftc.robotcore.internal.system.PermissionValidatorActivity;
 

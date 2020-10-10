@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.qualcomm.ftcdriverstation.FtcDriverStationActivityBase;
 import com.qualcomm.ftcdriverstation.ManualKeyInDialog;
 import com.qualcomm.robotcore.util.BatteryChecker;
@@ -11,6 +12,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.wifi.DriverStationAccessPointAssistant;
 import com.qualcomm.robotcore.wifi.NetworkConnection;
 import com.qualcomm.robotcore.wifi.NetworkType;
+
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.robotcore.internal.ui.UILocation;
 

@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.ArraySet;
+
 import com.qualcomm.hardware.logitech.LogitechGamepadF310;
 import com.qualcomm.hardware.microsoft.MicrosoftGamepadXbox360;
 import com.qualcomm.hardware.sony.SonyGamepadPS4;
 import com.qualcomm.robotcore.hardware.Gamepad;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
