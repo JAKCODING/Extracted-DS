@@ -313,7 +313,7 @@ public abstract class FtcDriverStationActivityBase extends ThemedActivity implem
         RobotLog.ii(TAG, "Pending Wifi Cancel: " + this.queuedOpMode.name);
     }
 
-    private class OpModeCountDownTimer {
+    class OpModeCountDownTimer {
         public static final long MS_COUNTDOWN_INTERVAL = 30000;
         public static final long MS_PER_S = 1000;
         public static final long MS_TICK = 1000;
