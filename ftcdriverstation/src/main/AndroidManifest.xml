@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="28" android:compileSdkVersionCodename="9" package="com.qualcomm.ftcdriverstation" platformBuildVersionCode="28" platformBuildVersionName="9">
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" android:required="true"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" android:required="true"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" android:required="true"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" android:required="true"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" android:required="true"/>
+    <uses-permission android:name="android.permission.INTERNET" android:required="true"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:required="true"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:required="true"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" android:required="true"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" android:required="true"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.SET_TIME_ZONE" android:required="true"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:required="true"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" android:required="true"/>
+    <uses-permission android:name="com.revrobotics.permission.UPDATE_CONTROL_HUB" android:required="true"/>
+    <uses-feature android:name="android.hardware.usb.accessory"/>
+    <uses-feature android:glEsVersion="0x00020000"/>
+    <uses-feature android:name="android.hardware.camera"/>
+    <application android:allowBackup="true" android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:extractNativeLibs="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:largeHeap="true" android:name="org.firstinspires.ftc.robotcore.internal.system.RobotApplication" android:theme="@style/AppThemeRedDS">
+        <activity android:configChanges="screenSize" android:label="@string/app_name" android:name="com.qualcomm.ftcdriverstation.PermissionValidatorWrapper" android:windowSoftInputMode="stateHidden">
+            <meta-data android:name="org.firstinspires.main.entry" android:value="false"/>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:configChanges="screenSize" android:label="@string/app_name" android:name="com.qualcomm.ftcdriverstation.FtcDriverStationActivityPortrait" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden">
+            <meta-data android:name="org.firstinspires.main.entry" android:value="false"/>
+        </activity>
+        <activity android:configChanges="screenSize" android:label="@string/app_name" android:name="com.qualcomm.ftcdriverstation.FtcDriverStationActivityLandscape" android:screenOrientation="landscape" android:windowSoftInputMode="stateHidden"/>
+        <activity android:label="@string/title_activity_settings" android:name="com.qualcomm.ftcdriverstation.FtcDriverStationSettingsActivity"/>
+        <activity android:configChanges="orientation|screenSize" android:label="EditGamepadTypeOverridesActivity" android:name="com.qualcomm.ftcdriverstation.EditGamepadTypeOverridesActivity"/>
+        <activity android:label="@string/title_activity_inspection_reports" android:name="com.qualcomm.ftcdriverstation.FtcDriverStationInspectionReportsActivity"/>
+        <activity android:label="@string/title_activity_settings" android:name="com.qualcomm.ftcdriverstation.FtcPairNetworkConnectionActivity" android:windowSoftInputMode="stateUnchanged"/>
+        <activity android:exported="true" android:label="@string/title_activity_config_wifi_direct" android:name="com.qualcomm.ftccommon.ConfigWifiDirectActivity"/>
+        <activity android:configChanges="orientation|screenSize" android:exported="true" android:label="@string/configure_activity" android:name="com.qualcomm.ftccommon.configuration.FtcLoadFileActivity"/>
+        <activity android:name="com.qualcomm.ftcdriverstation.FtcWirelessApNetworkConnectionActivity"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/program_and_manage_activity" android:name="org.firstinspires.ftc.ftccommon.internal.ProgramAndManageActivity"/>
+        <activity android:exported="true" android:label="@string/settings_activity" android:name="com.qualcomm.ftccommon.FtcRobotControllerSettingsActivity"/>
+        <activity android:configChanges="orientation|screenSize" android:exported="true" android:label="@string/title_activity_configfromtemplate" android:name="com.qualcomm.ftccommon.configuration.ConfigureFromTemplateActivity"/>
+        <activity android:configChanges="orientation|screenSize" android:exported="true" android:label="@string/view_logs_activity" android:name="com.qualcomm.ftccommon.ViewLogsActivity"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/app_name" android:name="com.qualcomm.ftccommon.configuration.FtcConfigurationActivity"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/app_name" android:name="com.qualcomm.ftccommon.configuration.FtcNewFileActivity"/>
+        <activity android:exported="true" android:label="@string/titleAdvancedRCSettings" android:name="com.qualcomm.ftccommon.FtcAdvancedRCSettingsActivity"/>
+        <activity android:exported="true" android:name="com.qualcomm.ftccommon.FtcLynxFirmwareUpdateActivity"/>
+        <activity android:exported="true" android:name="com.qualcomm.ftccommon.FtcLynxModuleAddressUpdateActivity"/>
+        <activity android:exported="true" android:label="@string/title_activity_wifi_channel_selector" android:name="com.qualcomm.ftccommon.FtcWifiDirectChannelSelectorActivity"/>
+        <activity android:exported="true" android:label="@string/title_activity_wifi_remembered_groups_editor" android:name="com.qualcomm.ftccommon.FtcWifiDirectRememberedGroupsActivity"/>
+        <activity android:label="@string/about_activity" android:name="com.qualcomm.ftccommon.AboutActivity"/>
+        <activity android:label="@string/ftc_about_activity" android:name="com.qualcomm.ftccommon.FtcAboutActivity"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_swap_devices_activity" android:name="com.qualcomm.ftccommon.configuration.EditSwapUsbDevices" android:windowSoftInputMode="stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_motor_controller_activity" android:name="com.qualcomm.ftccommon.configuration.EditMotorControllerActivity" android:windowSoftInputMode="stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_motor_controller_activity" android:name="com.qualcomm.ftccommon.configuration.EditLegacyMotorControllerActivity" android:windowSoftInputMode="stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_motor_controller_activity" android:name="com.qualcomm.ftccommon.configuration.EditMotorListActivity" android:windowSoftInputMode="stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_servo_controller_activity" android:name="com.qualcomm.ftccommon.configuration.EditServoControllerActivity" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_servo_controller_activity" android:name="com.qualcomm.ftccommon.configuration.EditLegacyServoControllerActivity" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_servo_controller_activity" android:name="com.qualcomm.ftccommon.configuration.EditServoListActivity" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_legacy_module_controller_activity" android:name="com.qualcomm.ftccommon.configuration.EditLegacyModuleControllerActivity" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_matrix_controller_activity" android:name="com.qualcomm.ftccommon.configuration.EditMatrixControllerActivity" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_core_device_interface_module_controller_activity" android:name="com.qualcomm.ftccommon.configuration.EditDeviceInterfaceModuleActivity" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_lynx_module_controller_activity" android:name="com.qualcomm.ftccommon.configuration.EditLynxModuleActivity" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_lynx_usb_device_activity" android:name="com.qualcomm.ftccommon.configuration.EditLynxUsbDeviceActivity" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_webcam_activity" android:name="com.qualcomm.ftccommon.configuration.EditWebcamActivity" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_pwm_devices_activity" android:name="com.qualcomm.ftccommon.configuration.EditPWMDevicesActivity" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_analog_input_devices_activity" android:name="com.qualcomm.ftccommon.configuration.EditAnalogInputDevicesActivity" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_digital_devices_activity" android:name="com.qualcomm.ftccommon.configuration.EditDigitalDevicesActivity" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_digital_devices_activity_lynx" android:name="com.qualcomm.ftccommon.configuration.EditDigitalDevicesActivityLynx" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_i2c_devices_activity" android:name="com.qualcomm.ftcc  ommon.configuration.EditI2cDevicesActivity" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_i2c_devices_activity" android:name="com.qualcomm.ftccommon.configuration.EditI2cDevicesActivityLynx" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/edit_analog_output_devices_activity" android:name="com.qualcomm.ftccommon.configuration.EditAnalogOutputDevicesActivity" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <receiver android:enabled="true" android:exported="true" android:name="org.firstinspires.ftc.ftccommon.internal.RunOnBoot" android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
+        <service android:enabled="true" android:name="org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogService"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/inspection_activity" android:name="org.firstinspires.inspection.DsInspectionActivity"/>
+        <activity android:configChanges="orientation|screenSize" android:label="@string/inspection_activity" android:name="org.firstinspires.inspection.RcInspectionActivity"/>
+        <provider android:authorities="com.qualcomm.ftcdriverstation.provider" android:exported="false" android:grantUriPermissions="true" android:name="androidx.core.content.FileProvider">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_provider_paths"/>
+        </provider>
+        <service android:enabled="true" android:name="org.firstinspires.ftc.robotcore.internal.files.MediaTransferProtocolMonitorService"/>
+        <meta-data android:name="autoStartService.org.firstinspires.ftc.robotcore.internal.files.MediaTransferProtocolMonitorService" android:value="BOTH|1000"/>
+        <service android:enabled="true" android:name="org.firstinspires.ftc.onbotjava.OnBotJavaService"/>
+        <meta-data android:name="autoStartService.org.firstinspires.ftc.onbotjava.OnBotJavaService" android:value="RC|2000"/>
+        <receiver android:exported="true" android:name="org.firstinspires.ftc.robotserver.internal.webserver.controlhubupdater.ChUpdaterCommManager$ChUpdaterBroadcastReceiver" android:permission="android.permission.INSTALL_PACKAGES">
+            <intent-filter>
+                <action android:name="com.revrobotics.controlhubupdater.broadcast.RESULT_BROADCAST"/>
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>
