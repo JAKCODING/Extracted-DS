@@ -78,10 +78,6 @@
             android:label="@string/title_activity_wifi_remembered_groups_editor" >
         </activity>
         <activity
-            android:name="com.qualcomm.ftccommon.AboutActivity"
-            android:label="@string/about_activity" >
-        </activity>
-        <activity
             android:name="com.qualcomm.ftccommon.FtcAboutActivity"
             android:label="@string/ftc_about_activity" >
         </activity>

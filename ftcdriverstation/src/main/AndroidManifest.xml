@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.qualcomm.ftcdriverstation"
-    android:platformBuildVersionCode="28"
-    android:platformBuildVersionName="9"
+    platformBuildVersionCode="28"
+    platformBuildVersionName="9"
     android:compileSdkVersion="28"
     android:compileSdkVersionCodename="9">
 
@@ -111,7 +111,7 @@
             android:name="com.qualcomm.ftcdriverstation.FtcPairNetworkConnectionActivity"
             android:label="@string/title_activity_settings"
             android:windowSoftInputMode="stateUnchanged" />
-        <activity
+        <!--<activity
             android:name="com.qualcomm.ftccommon.ConfigWifiDirectActivity"
             android:exported="true"
             android:label="@string/title_activity_config_wifi_direct" />
@@ -257,7 +257,7 @@
             android:label="@string/edit_digital_devices_activity_lynx"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name="com.qualcomm.ftcc  ommon.configuration.EditI2cDevicesActivity"
+            android:name="com.qualcomm.ftccommon.configuration.EditI2cDevicesActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/edit_i2c_devices_activity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
@@ -286,7 +286,7 @@
         </receiver>
         <service
             android:name="org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogService"
-            android:enabled="true" />
+            android:enabled="true" />-->
 
         <activity
             android:name="org.firstinspires.inspection.DsInspectionActivity"
@@ -312,9 +312,9 @@
         <meta-data
             android:name="autoStartService.org.firstinspires.ftc.robotcore.internal.files.MediaTransferProtocolMonitorService"
             android:value="BOTH|1000" />
-        <service
+        <!--<service
             android:name="org.firstinspires.ftc.onbotjava.OnBotJavaService"
-            android:enabled="true" />
+            android:enabled="true" />-->
         <meta-data
             android:name="autoStartService.org.firstinspires.ftc.onbotjava.OnBotJavaService"
             android:value="RC|2000" />
