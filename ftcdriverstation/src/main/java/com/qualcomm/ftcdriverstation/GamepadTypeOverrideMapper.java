@@ -40,217 +40,57 @@ public class GamepadTypeOverrideMapper {
       return var3;
    }
 
-   void addOrUpdate(GamepadTypeOverrideMapper.GamepadTypeOverrideEntry var1) {
-      synchronized(this){}
+   synchronized void addOrUpdate(final GamepadTypeOverrideEntry gamepadTypeOverrideEntry) {
 
-      Throwable var10000;
-      label314: {
-         Set var2;
-         boolean var10001;
-         try {
-            var2 = this.sharedPreferences.getStringSet("GAMEPAD_MAPPING", (Set)null);
-            this.serializedEntries = var2;
-         } catch (Throwable var44) {
-            var10000 = var44;
-            var10001 = false;
-            break label314;
-         }
-
-         if (var2 != null) {
-            String var46;
-            try {
-               var46 = checkForClash(var2, var1);
-            } catch (Throwable var43) {
-               var10000 = var43;
-               var10001 = false;
-               break label314;
-            }
-
-            if (var46 != null) {
-               try {
-                  this.serializedEntries.remove(var46);
-               } catch (Throwable var42) {
-                  var10000 = var42;
-                  var10001 = false;
-                  break label314;
+            final Set stringSet = this.sharedPreferences.getStringSet("GAMEPAD_MAPPING", (Set)null);
+            this.serializedEntries = (Set<String>)stringSet;
+            if (stringSet != null) {
+               final String checkForClash = checkForClash(stringSet, gamepadTypeOverrideEntry);
+               if (checkForClash != null) {
+                  this.serializedEntries.remove(checkForClash);
                }
+               this.serializedEntries.add(gamepadTypeOverrideEntry.toString());
             }
-
-            try {
-               this.serializedEntries.add(var1.toString());
-            } catch (Throwable var41) {
-               var10000 = var41;
-               var10001 = false;
-               break label314;
+            else {
+               (this.serializedEntries = (Set<String>)new ArraySet()).add(gamepadTypeOverrideEntry.toString());
             }
-         } else {
-            try {
-               ArraySet var47 = new ArraySet();
-               this.serializedEntries = var47;
-               var47.add(var1.toString());
-            } catch (Throwable var40) {
-               var10000 = var40;
-               var10001 = false;
-               break label314;
-            }
-         }
+            this.sharedPreferences.edit().putStringSet("GAMEPAD_MAPPING", (Set)this.serializedEntries).commit();
 
-         label295:
-         try {
-            this.sharedPreferences.edit().putStringSet("GAMEPAD_MAPPING", this.serializedEntries).commit();
-            return;
-         } catch (Throwable var39) {
-            var10000 = var39;
-            var10001 = false;
-            break label295;
-         }
-      }
-
-      Throwable var45 = var10000;
-      throw var45;
    }
 
-   void delete(GamepadTypeOverrideMapper.GamepadTypeOverrideEntry var1) {
-      synchronized(this){}
-
-      Throwable var10000;
-      label306: {
-         Set var2;
-         boolean var10001;
-         try {
-            var2 = this.sharedPreferences.getStringSet("GAMEPAD_MAPPING", (Set)null);
-            this.serializedEntries = var2;
-         } catch (Throwable var33) {
-            var10000 = var33;
-            var10001 = false;
-            break label306;
-         }
-
-         if (var2 == null) {
+   synchronized void delete(final GamepadTypeOverrideEntry gamepadTypeOverrideEntry) {
+         final Set stringSet = this.sharedPreferences.getStringSet("GAMEPAD_MAPPING", (Set)null);
+         this.serializedEntries = (Set<String>)stringSet;
+         if (stringSet == null) {
             return;
          }
-
-         boolean var3 = false;
-
-         Iterator var36;
-         try {
-            var36 = var2.iterator();
-         } catch (Throwable var31) {
-            var10000 = var31;
-            var10001 = false;
-            break label306;
-         }
-
-         while(true) {
-            try {
-               if (!var36.hasNext()) {
-                  break;
-               }
-
-               if (!((String)var36.next()).equals(var1.toString())) {
-                  continue;
-               }
-            } catch (Throwable var32) {
-               var10000 = var32;
-               var10001 = false;
-               break label306;
-            }
-
-            var3 = true;
-         }
-
-         if (var3) {
-            label282: {
-               try {
-                  this.serializedEntries.remove(var1.toString());
-                  this.sharedPreferences.edit().putStringSet("GAMEPAD_MAPPING", this.serializedEntries).commit();
-               } catch (Throwable var29) {
-                  var10000 = var29;
-                  var10001 = false;
-                  break label282;
-               }
-
-               return;
-            }
-         } else {
-            label284:
-            try {
-               IllegalArgumentException var35 = new IllegalArgumentException();
-               throw var35;
-            } catch (Throwable var30) {
-               var10000 = var30;
-               var10001 = false;
-               break label284;
+         boolean b = false;
+         final Iterator<String> iterator = stringSet.iterator();
+         while (iterator.hasNext()) {
+            if (iterator.next().equals(gamepadTypeOverrideEntry.toString())) {
+               b = true;
             }
          }
-      }
-
-      Throwable var34 = var10000;
-      throw var34;
+         if (b) {
+            this.serializedEntries.remove(gamepadTypeOverrideEntry.toString());
+            this.sharedPreferences.edit().putStringSet("GAMEPAD_MAPPING", (Set)this.serializedEntries).commit();
+            return;
+         }
+         throw new IllegalArgumentException();
    }
 
-   ArrayList getEntries() {
-      synchronized(this){}
-
-      Throwable var10000;
-      label207: {
-         Set var1;
-         boolean var10001;
-         try {
-            var1 = this.sharedPreferences.getStringSet("GAMEPAD_MAPPING", (Set)null);
-            this.serializedEntries = var1;
-         } catch (Throwable var22) {
-            var10000 = var22;
-            var10001 = false;
-            break label207;
+   synchronized ArrayList<GamepadTypeOverrideEntry> getEntries() {
+         final Set stringSet = this.sharedPreferences.getStringSet("GAMEPAD_MAPPING", (Set)null);
+         this.serializedEntries = (Set<String>)stringSet;
+         if (stringSet == null) {
+            return new ArrayList<GamepadTypeOverrideEntry>();
          }
-
-         if (var1 == null) {
-            label191: {
-               ArrayList var23;
-               try {
-                  var23 = new ArrayList();
-               } catch (Throwable var19) {
-                  var10000 = var19;
-                  var10001 = false;
-                  break label191;
-               }
-
-               return var23;
-            }
-         } else {
-            label203: {
-               ArrayList var2;
-               Iterator var24;
-               try {
-                  var2 = new ArrayList();
-                  var24 = this.serializedEntries.iterator();
-               } catch (Throwable var21) {
-                  var10000 = var21;
-                  var10001 = false;
-                  break label203;
-               }
-
-               while(true) {
-                  try {
-                     if (var24.hasNext()) {
-                        var2.add(GamepadTypeOverrideMapper.GamepadTypeOverrideEntry.fromString((String)var24.next()));
-                        continue;
-                     }
-                  } catch (Throwable var20) {
-                     var10000 = var20;
-                     var10001 = false;
-                     break;
-                  }
-
-                  return var2;
-               }
-            }
+         final ArrayList<GamepadTypeOverrideEntry> list = new ArrayList<GamepadTypeOverrideEntry>();
+         final Iterator<String> iterator = this.serializedEntries.iterator();
+         while (iterator.hasNext()) {
+            list.add(GamepadTypeOverrideEntry.fromString(iterator.next()));
          }
-      }
-
-      Throwable var25 = var10000;
-      throw var25;
+         return list;
    }
 
    GamepadTypeOverrideMapper.GamepadTypeOverrideEntry getEntryFor(int var1, int var2) {
