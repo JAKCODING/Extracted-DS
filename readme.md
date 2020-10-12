@@ -1,14 +1,16 @@
-This is a home for the SDK after all the AARs have been extracted. It is the base for the OpenRC refresh.
+Extracted-DS is a fork of Extracted-RC that contains a reverse-engineered approximation of the Driver Station source code. This is NOT an FTC-endorsed project and is not competition legal. Please use this for reference purposes or off-season projects only. Using this library in a competition could result in disqualifications.
 
-Notes:
+Thank you to NullPointerError and the OpenFTC team, and (obviously) the FTC Software Team for doing an amazing job designing the FIRST software infrastructure!
 
- - Currently holds v6.0
- - FIXME: Script_c_format_convert
- - annotations JAR replaced with gradle line
- - gson JAR replaced with gradle line (extras not published to maven/jcenter, so extras JAR still needed)
- - ~~JavaWebSocket JAR replaced with gradle line~~ (1.4.1 not on maven/jcenter yet)
- - ~~SL4J JAR omitted because aforementioned gradle line seems to pull it in~~
- - tensorflow-lite AAR replaced with gradle line
- - tfod FTC AAR replaced with gradle line (repacked AAR for Bintray)
- - temporarily added OpenFTC maven repo to root gradle file so above line resolved before repo linked to jcenter
- - Universal blocks vuforia key removed
+  
+TODO
+
+ -Fix build errors
+ 
+ -Ensure decompiler output matches up
+ 
+ -Test on Android
+ 
+ -Change icons
+ 
+ -Test to ensure app cannot pass as competition-legal
