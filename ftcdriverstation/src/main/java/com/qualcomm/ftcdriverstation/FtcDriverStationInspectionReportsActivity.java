@@ -1,49 +1,46 @@
 package com.qualcomm.ftcdriverstation;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.widget.FrameLayout;
-
 import org.firstinspires.ftc.robotcore.internal.network.DeviceNameManagerFactory;
 import org.firstinspires.ftc.robotcore.internal.system.PreferencesHelper;
 import org.firstinspires.ftc.robotcore.internal.ui.BaseActivity;
 
 public class FtcDriverStationInspectionReportsActivity extends BaseActivity {
-    protected static final String CLIENT_CONNECTED = "CLIENT_CONNECTED";
-    public static final String TAG = "FtcDriverStationInspectionReportsActivity";
+   protected static final String CLIENT_CONNECTED = "CLIENT_CONNECTED";
+   public static final String TAG = "FtcDriverStationInspectionReportsActivity";
 
-    public String getTag() {
-        return TAG;
-    }
+   protected FrameLayout getBackBar() {
+      return (FrameLayout)this.findViewById(2131230804);
+   }
 
-    public static class SettingsFragment extends PreferenceFragment {
-        protected boolean clientConnected = false;
+   public String getTag() {
+      return "FtcDriverStationInspectionReportsActivity";
+   }
 
-        public void onCreate(Bundle bundle) {
-            super.onCreate(bundle);
-            this.clientConnected = getArguments().getBoolean(FtcDriverStationInspectionReportsActivity.CLIENT_CONNECTED);
-            addPreferencesFromResource(R.xml.inspection);
-            if (!this.clientConnected) {
-                findPreference(getString(R.string.pref_launch_inspect_rc)).setEnabled(false);
-            }
-        }
-    }
+   protected void onCreate(Bundle var1) {
+      super.onCreate(var1);
+      this.setContentView(2131427371);
+      DeviceNameManagerFactory.getInstance().initializeDeviceNameIfNecessary();
+      FtcDriverStationInspectionReportsActivity.SettingsFragment var2 = new FtcDriverStationInspectionReportsActivity.SettingsFragment();
+      var1 = new Bundle();
+      var1.putBoolean("CLIENT_CONNECTED", (new PreferencesHelper("FtcDriverStationInspectionReportsActivity", this)).readBoolean(this.getString(2131624448), false));
+      var2.setArguments(var1);
+      this.getFragmentManager().beginTransaction().replace(2131230855, var2).commit();
+   }
 
-    /* access modifiers changed from: protected */
-    public FrameLayout getBackBar() {
-        return (FrameLayout) findViewById(R.id.backbar);
-    }
+   public static class SettingsFragment extends PreferenceFragment {
+      protected boolean clientConnected = false;
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        setContentView(R.layout.activity_generic_settings);
-        DeviceNameManagerFactory.getInstance().initializeDeviceNameIfNecessary();
-        SettingsFragment settingsFragment = new SettingsFragment();
-        Bundle bundle2 = new Bundle();
-        bundle2.putBoolean(CLIENT_CONNECTED, new PreferencesHelper(TAG, (Context) this).readBoolean(getString(R.string.pref_rc_connected), false));
-        settingsFragment.setArguments(bundle2);
-        getFragmentManager().beginTransaction().replace(R.id.container, settingsFragment).commit();
-    }
+      public void onCreate(Bundle var1) {
+         super.onCreate(var1);
+         this.clientConnected = this.getArguments().getBoolean("CLIENT_CONNECTED");
+         this.addPreferencesFromResource(2131820550);
+         if (!this.clientConnected) {
+            this.findPreference(this.getString(2131624426)).setEnabled(false);
+         }
+
+      }
+   }
 }

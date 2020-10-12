@@ -3,52 +3,42 @@ package com.qualcomm.ftcdriverstation;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.firstinspires.ftc.robotcore.internal.system.Misc;
 import org.firstinspires.ftc.robotcore.internal.system.PermissionValidatorActivity;
 
 public class PermissionValidatorWrapper extends PermissionValidatorActivity {
-    private final String TAG = "PermissionValidatorWrapper";
-    protected List<String> robotControllerPermissions = new ArrayList<String>() {
-        {
-            add("android.permission.WRITE_EXTERNAL_STORAGE");
-            add("android.permission.READ_EXTERNAL_STORAGE");
-            add("android.permission.ACCESS_COARSE_LOCATION");
-        }
-    };
-    private SharedPreferences sharedPreferences;
+   private final String TAG = "PermissionValidatorWrapper";
+   protected List robotControllerPermissions = new ArrayList() {
+      {
+         this.add("android.permission.WRITE_EXTERNAL_STORAGE");
+         this.add("android.permission.READ_EXTERNAL_STORAGE");
+         this.add("android.permission.ACCESS_COARSE_LOCATION");
+      }
+   };
+   private SharedPreferences sharedPreferences;
 
-    public String mapPermissionToExplanation(String str) {
-        if (str.equals("android.permission.WRITE_EXTERNAL_STORAGE")) {
-            return Misc.formatForUser((int) R.string.permDsWriteExternalStorageExplain);
-        }
-        if (str.equals("android.permission.READ_EXTERNAL_STORAGE")) {
-            return Misc.formatForUser((int) R.string.permDsReadExternalStorageExplain);
-        }
-        if (str.equals("android.permission.ACCESS_COARSE_LOCATION")) {
-            return Misc.formatForUser((int) R.string.permAccessLocationExplain);
-        }
-        return Misc.formatForUser((int) R.string.permGenericExplain);
-    }
+   public String mapPermissionToExplanation(String var1) {
+      if (var1.equals("android.permission.WRITE_EXTERNAL_STORAGE")) {
+         return Misc.formatForUser(2131624382);
+      } else if (var1.equals("android.permission.READ_EXTERNAL_STORAGE")) {
+         return Misc.formatForUser(2131624381);
+      } else {
+         return var1.equals("android.permission.ACCESS_COARSE_LOCATION") ? Misc.formatForUser(2131624380) : Misc.formatForUser(2131624383);
+      }
+   }
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        this.permissions = this.robotControllerPermissions;
-    }
+   protected void onCreate(Bundle var1) {
+      super.onCreate(var1);
+      this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+      this.permissions = this.robotControllerPermissions;
+   }
 
-    /* access modifiers changed from: protected */
-    public Class onStartApplication() {
-        FtcDriverStationActivityBase.setPermissionsValidated();
-        String string = getResources().getString(R.string.key_ds_layout);
-        String string2 = getResources().getString(R.string.ds_ui_portrait);
-        if (this.sharedPreferences.getString(string, string2).equals(string2)) {
-            return FtcDriverStationActivityPortrait.class;
-        }
-        return FtcDriverStationActivityLandscape.class;
-    }
+   protected Class onStartApplication() {
+      FtcDriverStationActivityBase.setPermissionsValidated();
+      String var1 = this.getResources().getString(2131624245);
+      String var2 = this.getResources().getString(2131624186);
+      return this.sharedPreferences.getString(var1, var2).equals(var2) ? FtcDriverStationActivityPortrait.class : FtcDriverStationActivityLandscape.class;
+   }
 }

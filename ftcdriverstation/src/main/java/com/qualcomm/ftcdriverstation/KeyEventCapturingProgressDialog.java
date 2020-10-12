@@ -5,34 +5,34 @@ import android.content.Context;
 import android.view.KeyEvent;
 
 public class KeyEventCapturingProgressDialog extends ProgressDialog {
-    Listener listener;
+   KeyEventCapturingProgressDialog.Listener listener;
 
-    interface Listener {
-        void onKeyDown(KeyEvent keyEvent);
-    }
+   public KeyEventCapturingProgressDialog(Context var1) {
+      super(var1);
+   }
 
-    public boolean onKeyUp(int i, KeyEvent keyEvent) {
-        return true;
-    }
+   public KeyEventCapturingProgressDialog(Context var1, int var2) {
+      super(var1, var2);
+   }
 
-    public KeyEventCapturingProgressDialog(Context context) {
-        super(context);
-    }
+   public boolean onKeyDown(int var1, KeyEvent var2) {
+      KeyEventCapturingProgressDialog.Listener var3 = this.listener;
+      if (var3 != null) {
+         var3.onKeyDown(var2);
+      }
 
-    public KeyEventCapturingProgressDialog(Context context, int i) {
-        super(context, i);
-    }
+      return true;
+   }
 
-    public void setListener(Listener listener2) {
-        this.listener = listener2;
-    }
+   public boolean onKeyUp(int var1, KeyEvent var2) {
+      return true;
+   }
 
-    public boolean onKeyDown(int i, KeyEvent keyEvent) {
-        Listener listener2 = this.listener;
-        if (listener2 == null) {
-            return true;
-        }
-        listener2.onKeyDown(keyEvent);
-        return true;
-    }
+   public void setListener(KeyEventCapturingProgressDialog.Listener var1) {
+      this.listener = var1;
+   }
+
+   interface Listener {
+      void onKeyDown(KeyEvent var1);
+   }
 }

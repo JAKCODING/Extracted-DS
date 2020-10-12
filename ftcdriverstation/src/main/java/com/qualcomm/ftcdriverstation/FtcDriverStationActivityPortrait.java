@@ -2,97 +2,97 @@ package com.qualcomm.ftcdriverstation;
 
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import android.widget.TextView.OnEditorActionListener;
 import com.qualcomm.robotcore.util.BatteryChecker;
 import com.qualcomm.robotcore.util.RobotLog;
-
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.robotcore.internal.ui.UILocation;
 
 public class FtcDriverStationActivityPortrait extends FtcDriverStationActivityBase {
-    protected EditText matchNumField;
+   protected EditText matchNumField;
 
-    public void subclassOnCreate() {
-        setContentView(R.layout.activity_ftc_driver_station);
-        this.matchNumField = (EditText) findViewById(R.id.matchNumTextField);
-    }
+   protected void clearMatchNumber() {
+      this.matchNumField.setText("");
+   }
 
-    /* access modifiers changed from: protected */
-    public void updateRcBatteryStatus(BatteryChecker.BatteryStatus batteryStatus) {
-        TextView textView = this.rcBatteryTelemetry;
-        setTextView(textView, Double.toString(batteryStatus.percent) + "%");
-        setBatteryIcon(batteryStatus, this.rcBatteryIcon);
-    }
+   protected void disableMatchLoggingUI() {
+      RobotLog.ii("DriverStation", "Hide match logging UI");
+      this.matchNumField.setVisibility(4);
+      this.matchNumField.setEnabled(false);
+      this.findViewById(2131230986).setVisibility(4);
+   }
 
-    public View getPopupMenuAnchor() {
-        return this.buttonMenu;
-    }
-
-    public void updateBatteryStatus(BatteryChecker.BatteryStatus batteryStatus) {
-        TextView textView = this.dsBatteryInfo;
-        setTextView(textView, Double.toString(batteryStatus.percent) + "%");
-        setBatteryIcon(batteryStatus, this.dsBatteryIcon);
-    }
-
-    /* access modifiers changed from: protected */
-    public void pingStatus(String str) {
-        setTextView(this.textPingStatus, str);
-    }
-
-    /* access modifiers changed from: protected */
-    public void enableMatchLoggingUI() {
-        RobotLog.ii(FtcDriverStationActivityBase.TAG, "Show match logging UI");
-        this.matchNumField.setVisibility(0);
-        this.matchNumField.setEnabled(true);
-        findViewById(R.id.matchNumLabel).setVisibility(0);
-    }
-
-    /* access modifiers changed from: protected */
-    public void disableMatchLoggingUI() {
-        RobotLog.ii(FtcDriverStationActivityBase.TAG, "Hide match logging UI");
-        this.matchNumField.setVisibility(4);
-        this.matchNumField.setEnabled(false);
-        findViewById(R.id.matchNumLabel).setVisibility(4);
-    }
-
-    /* access modifiers changed from: protected */
-    public int getMatchNumber() {
-        return Integer.parseInt(this.matchNumField.getText().toString());
-    }
-
-    /* access modifiers changed from: protected */
-    public void clearMatchNumber() {
-        this.matchNumField.setText("");
-    }
-
-    /* access modifiers changed from: protected */
-    public void doMatchNumFieldBehaviorInit() {
-        this.matchNumField.setText("");
-        this.matchNumField.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                FtcDriverStationActivityPortrait.this.matchNumField.setText("");
+   protected void doMatchNumFieldBehaviorInit() {
+      this.matchNumField.setText("");
+      this.matchNumField.setOnClickListener(new OnClickListener() {
+         public void onClick(View var1) {
+            FtcDriverStationActivityPortrait.this.matchNumField.setText("");
+         }
+      });
+      this.matchNumField.setOnEditorActionListener(new OnEditorActionListener() {
+         public boolean onEditorAction(TextView var1, int var2, KeyEvent var3) {
+            if (var2 == 6) {
+               var2 = FtcDriverStationActivityPortrait.this.validateMatchEntry(var1.getText().toString());
+               if (var2 == -1) {
+                  AppUtil.getInstance().showToast(UILocation.ONLY_LOCAL, FtcDriverStationActivityPortrait.this.getString(2131624244));
+                  FtcDriverStationActivityPortrait.this.matchNumField.setText("");
+               } else {
+                  FtcDriverStationActivityPortrait.this.sendMatchNumber(var2);
+               }
             }
-        });
-        this.matchNumField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i != 6) {
-                    return false;
-                }
-                int validateMatchEntry = FtcDriverStationActivityPortrait.this.validateMatchEntry(textView.getText().toString());
-                if (validateMatchEntry == -1) {
-                    AppUtil.getInstance().showToast(UILocation.ONLY_LOCAL, FtcDriverStationActivityPortrait.this.getString(R.string.invalidMatchNumber));
-                    FtcDriverStationActivityPortrait.this.matchNumField.setText("");
-                    return false;
-                }
-                FtcDriverStationActivityPortrait.this.sendMatchNumber(validateMatchEntry);
-                return false;
-            }
-        });
-        findViewById(R.id.buttonInit).requestFocus();
-        if (!this.preferencesHelper.readBoolean(getString(R.string.pref_match_logging_on_off), false)) {
-            disableMatchLoggingUI();
-        }
-    }
+
+            return false;
+         }
+      });
+      this.findViewById(2131230818).requestFocus();
+      if (!this.preferencesHelper.readBoolean(this.getString(2131624434), false)) {
+         this.disableMatchLoggingUI();
+      }
+
+   }
+
+   protected void enableMatchLoggingUI() {
+      RobotLog.ii("DriverStation", "Show match logging UI");
+      this.matchNumField.setVisibility(0);
+      this.matchNumField.setEnabled(true);
+      this.findViewById(2131230986).setVisibility(0);
+   }
+
+   protected int getMatchNumber() {
+      return Integer.parseInt(this.matchNumField.getText().toString());
+   }
+
+   public View getPopupMenuAnchor() {
+      return this.buttonMenu;
+   }
+
+   protected void pingStatus(String var1) {
+      this.setTextView(this.textPingStatus, var1);
+   }
+
+   public void subclassOnCreate() {
+      this.setContentView(2131427364);
+      this.matchNumField = (EditText)this.findViewById(2131230987);
+   }
+
+   public void updateBatteryStatus(BatteryChecker.BatteryStatus var1) {
+      TextView var2 = this.dsBatteryInfo;
+      StringBuilder var3 = new StringBuilder();
+      var3.append(Double.toString(var1.percent));
+      var3.append("%");
+      this.setTextView(var2, var3.toString());
+      this.setBatteryIcon(var1, this.dsBatteryIcon);
+   }
+
+   protected void updateRcBatteryStatus(BatteryChecker.BatteryStatus var1) {
+      TextView var2 = this.rcBatteryTelemetry;
+      StringBuilder var3 = new StringBuilder();
+      var3.append(Double.toString(var1.percent));
+      var3.append("%");
+      this.setTextView(var2, var3.toString());
+      this.setBatteryIcon(var1, this.rcBatteryIcon);
+   }
 }

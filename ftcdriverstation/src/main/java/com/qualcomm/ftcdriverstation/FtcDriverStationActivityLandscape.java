@@ -1,264 +1,311 @@
 package com.qualcomm.ftcdriverstation;
 
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.qualcomm.ftcdriverstation.FtcDriverStationActivityBase;
-import com.qualcomm.ftcdriverstation.ManualKeyInDialog;
 import com.qualcomm.robotcore.util.BatteryChecker;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.wifi.DriverStationAccessPointAssistant;
 import com.qualcomm.robotcore.wifi.NetworkConnection;
 import com.qualcomm.robotcore.wifi.NetworkType;
-
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.robotcore.internal.ui.UILocation;
 
 public class FtcDriverStationActivityLandscape extends FtcDriverStationActivityBase implements DriverStationAccessPointAssistant.ConnectedNetworkHealthListener {
-    View configAndTimerRegion;
-    View dividerRcBatt12vBatt;
-    ImageView headerColorLeft;
-    LinearLayout headerColorRight;
-    LinearLayout layoutPingChan;
-    View matchLoggingContainer;
-    TextView matchNumTxtView;
-    ImageView networkSignalLevel;
-    TextView network_ssid;
-    PracticeTimerManager practiceTimerManager;
-    View telemetryRegion;
-    TextView textDbmLink;
-    WiFiStatsView wiFiStatsView = WiFiStatsView.PING_CHAN;
+   View configAndTimerRegion;
+   View dividerRcBatt12vBatt;
+   ImageView headerColorLeft;
+   LinearLayout headerColorRight;
+   LinearLayout layoutPingChan;
+   View matchLoggingContainer;
+   TextView matchNumTxtView;
+   ImageView networkSignalLevel;
+   TextView network_ssid;
+   PracticeTimerManager practiceTimerManager;
+   View telemetryRegion;
+   TextView textDbmLink;
+   FtcDriverStationActivityLandscape.WiFiStatsView wiFiStatsView;
 
-    enum WiFiStatsView {
-        PING_CHAN,
-        DBM_LINK
-    }
+   public FtcDriverStationActivityLandscape() {
+      this.wiFiStatsView = FtcDriverStationActivityLandscape.WiFiStatsView.PING_CHAN;
+   }
 
-    public void subclassOnCreate() {
-        setContentView(R.layout.activity_ds_land_main);
-        this.headerColorLeft = (ImageView) findViewById(R.id.headerColorLeft);
-        this.headerColorRight = (LinearLayout) findViewById(R.id.headerColorRight);
-        this.configAndTimerRegion = findViewById(R.id.configAndTimerRegion);
-        this.telemetryRegion = findViewById(R.id.telemetryRegion);
-        this.practiceTimerManager = new PracticeTimerManager(this, (ImageView) findViewById(R.id.practiceTimerStartStopBtn), (TextView) findViewById(R.id.practiceTimerTimeView));
-        this.matchLoggingContainer = findViewById(R.id.matchNumContainer);
-        this.matchNumTxtView = (TextView) findViewById(R.id.matchNumTextField);
-        this.networkSignalLevel = (ImageView) findViewById(R.id.networkSignalLevel);
-        this.layoutPingChan = (LinearLayout) findViewById(R.id.layoutPingChan);
-        this.textDbmLink = (TextView) findViewById(R.id.textDbmLink);
-        this.network_ssid = (TextView) findViewById(R.id.network_ssid);
-        this.dividerRcBatt12vBatt = findViewById(R.id.dividerRcBatt12vBatt);
-    }
+   protected void assumeClientConnect(FtcDriverStationActivityBase.ControlPanelBack var1) {
+      RobotLog.vv("DriverStation", "Assuming client connected");
+      this.setClientConnected(true);
+      this.uiRobotControllerIsConnected(var1);
+   }
 
-    public View getPopupMenuAnchor() {
-        return this.wifiInfo;
-    }
+   protected void clearMatchNumber() {
+      this.matchNumTxtView.setText("NONE");
+   }
 
-    /* access modifiers changed from: protected */
-    public void doMatchNumFieldBehaviorInit() {
-        this.matchLoggingContainer.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                new ManualKeyInDialog(FtcDriverStationActivityLandscape.this.context, "Enter Match Number", new ManualKeyInDialog.Listener() {
-                    public void onInput(String str) {
-                        int validateMatchEntry = FtcDriverStationActivityLandscape.this.validateMatchEntry(str);
-                        if (validateMatchEntry == -1) {
-                            AppUtil.getInstance().showToast(UILocation.ONLY_LOCAL, FtcDriverStationActivityLandscape.this.getString(R.string.invalidMatchNumber));
-                            FtcDriverStationActivityLandscape.this.clearMatchNumber();
-                            return;
-                        }
-                        FtcDriverStationActivityLandscape.this.matchNumTxtView.setText(Integer.toString(validateMatchEntry));
-                        FtcDriverStationActivityLandscape.this.sendMatchNumber(validateMatchEntry);
-                    }
-                }).show();
+   protected void dimAndDisableAllControls() {
+      super.dimAndDisableAllControls();
+      this.setOpacity(this.configAndTimerRegion, 0.3F);
+      this.setOpacity(this.telemetryRegion, 0.3F);
+   }
+
+   protected void disableMatchLoggingUI() {
+      RobotLog.ii("DriverStation", "Hide match logging UI");
+      this.matchLoggingContainer.setVisibility(8);
+   }
+
+   protected void displayRcBattery(boolean var1) {
+      super.displayRcBattery(var1);
+      View var2 = this.dividerRcBatt12vBatt;
+      byte var3;
+      if (var1) {
+         var3 = 0;
+      } else {
+         var3 = 8;
+      }
+
+      var2.setVisibility(var3);
+   }
+
+   protected void doMatchNumFieldBehaviorInit() {
+      this.matchLoggingContainer.setOnClickListener(new OnClickListener() {
+         public void onClick(View var1) {
+            (new ManualKeyInDialog(FtcDriverStationActivityLandscape.this.context, "Enter Match Number", new ManualKeyInDialog.Listener() {
+               public void onInput(String var1) {
+                  int var2 = FtcDriverStationActivityLandscape.this.validateMatchEntry(var1);
+                  if (var2 == -1) {
+                     AppUtil.getInstance().showToast(UILocation.ONLY_LOCAL, FtcDriverStationActivityLandscape.this.getString(2131624244));
+                     FtcDriverStationActivityLandscape.this.clearMatchNumber();
+                  } else {
+                     FtcDriverStationActivityLandscape.this.matchNumTxtView.setText(Integer.toString(var2));
+                     FtcDriverStationActivityLandscape.this.sendMatchNumber(var2);
+                  }
+
+               }
+            })).show();
+         }
+      });
+      if (!this.preferencesHelper.readBoolean(this.getString(2131624434), false)) {
+         this.disableMatchLoggingUI();
+      }
+
+   }
+
+   protected void enableAndBrightenForConnected(FtcDriverStationActivityBase.ControlPanelBack var1) {
+      super.enableAndBrightenForConnected(var1);
+      this.setOpacity(this.configAndTimerRegion, 1.0F);
+      this.setOpacity(this.telemetryRegion, 1.0F);
+   }
+
+   protected void enableMatchLoggingUI() {
+      RobotLog.ii("DriverStation", "Show match logging UI");
+      this.matchLoggingContainer.setVisibility(0);
+   }
+
+   protected int getMatchNumber() throws NumberFormatException {
+      return Integer.parseInt(this.matchNumTxtView.getText().toString());
+   }
+
+   public View getPopupMenuAnchor() {
+      return this.wifiInfo;
+   }
+
+   public int linkSpeedToWiFiSignal(int var1, int var2) {
+      float var3 = (float)var1;
+      if (var3 <= 6.0F) {
+         return 0;
+      } else {
+         return var3 >= 54.0F ? var2 : Math.round((var3 - 6.0F) / (48.0F / (float)(var2 - 1)));
+      }
+   }
+
+   public void onNetworkHealthUpdate(final int var1, final int var2) {
+      final int var3 = (int)Math.round((double)((float)(this.rssiToWiFiSignal(var1, 5) + this.linkSpeedToWiFiSignal(var2, 5))) / 2.0D);
+      if (var3 != 0) {
+         if (var3 != 1) {
+            if (var3 != 2) {
+               if (var3 != 3) {
+                  if (var3 != 4) {
+                     if (var3 != 5) {
+                        var3 = 0;
+                     } else {
+                        var3 = 2131165323;
+                     }
+                  } else {
+                     var3 = 2131165322;
+                  }
+               } else {
+                  var3 = 2131165321;
+               }
+            } else {
+               var3 = 2131165320;
             }
-        });
-        if (!this.preferencesHelper.readBoolean(getString(R.string.pref_match_logging_on_off), false)) {
-            disableMatchLoggingUI();
-        }
-    }
+         } else {
+            var3 = 2131165319;
+         }
+      } else {
+         var3 = 2131165318;
+      }
 
-    /* access modifiers changed from: protected */
-    public void enableMatchLoggingUI() {
-        RobotLog.ii(FtcDriverStationActivityBase.TAG, "Show match logging UI");
-        this.matchLoggingContainer.setVisibility(0);
-    }
+      this.runOnUiThread(new Runnable() {
+         public void run() {
+            FtcDriverStationActivityLandscape.this.networkSignalLevel.setBackgroundResource(var3);
+            FtcDriverStationActivityLandscape.this.textDbmLink.setText(String.format("%ddBm Link %dMb", var1, var2));
+         }
+      });
+   }
 
-    /* access modifiers changed from: protected */
-    public void disableMatchLoggingUI() {
-        RobotLog.ii(FtcDriverStationActivityBase.TAG, "Hide match logging UI");
-        this.matchLoggingContainer.setVisibility(8);
-    }
+   protected void onPause() {
+      super.onPause();
+      this.practiceTimerManager.reset();
+      NetworkConnection var1 = this.networkConnectionHandler.getNetworkConnection();
+      if (var1.getNetworkType() == NetworkType.WIRELESSAP) {
+         ((DriverStationAccessPointAssistant)var1).unregisterNetworkHealthListener(this);
+      }
 
-    /* access modifiers changed from: protected */
-    public int getMatchNumber() throws NumberFormatException {
-        return Integer.parseInt(this.matchNumTxtView.getText().toString());
-    }
+   }
 
-    /* access modifiers changed from: protected */
-    public void clearMatchNumber() {
-        this.matchNumTxtView.setText("NONE");
-    }
+   protected void onResume() {
+      super.onResume();
+      NetworkConnection var1 = this.networkConnectionHandler.getNetworkConnection();
+      if (var1.getNetworkType() == NetworkType.WIRELESSAP) {
+         ((DriverStationAccessPointAssistant)var1).registerNetworkHealthListener(this);
+      }
 
-    /* access modifiers changed from: protected */
-    public void dimAndDisableAllControls() {
-        super.dimAndDisableAllControls();
-        setOpacity(this.configAndTimerRegion, 0.3f);
-        setOpacity(this.telemetryRegion, 0.3f);
-    }
+   }
 
-    /* access modifiers changed from: protected */
-    public void uiRobotControllerIsDisconnected() {
-        super.uiRobotControllerIsDisconnected();
-        runOnUiThread(new Runnable() {
-            public void run() {
-                FtcDriverStationActivityLandscape.this.headerColorRight.setBackground(FtcDriverStationActivityLandscape.this.getResources().getDrawable(R.drawable.lds_header_shadow_disconnected));
-                FtcDriverStationActivityLandscape.this.headerColorLeft.setBackgroundColor(FtcDriverStationActivityLandscape.this.getResources().getColor(R.color.lds_header_red_gradient_start));
-                FtcDriverStationActivityLandscape.this.textWifiDirectStatus.setText("Disconnected");
+   protected void pingStatus(String var1) {
+      TextView var2 = this.textPingStatus;
+      StringBuilder var3 = new StringBuilder();
+      var3.append("Ping: ");
+      var3.append(var1);
+      var3.append(" - ");
+      this.setTextView(var2, var3.toString());
+   }
+
+   public int rssiToWiFiSignal(int var1, int var2) {
+      float var3 = (float)var1;
+      if (var3 <= -90.0F) {
+         return 0;
+      } else {
+         return var3 >= -55.0F ? var2 : Math.round((var3 + 90.0F) / (35.0F / (float)(var2 - 1)));
+      }
+   }
+
+   protected void showWifiStatus(final boolean var1, final String var2) {
+      this.runOnUiThread(new Runnable() {
+         public void run() {
+            FtcDriverStationActivityLandscape.this.textWifiDirectStatusShowingRC = var1;
+            FtcDriverStationActivityLandscape.this.textWifiDirectStatus.setText(var2);
+            if (!var2.equals(FtcDriverStationActivityLandscape.this.getString(2131624680)) && !var2.equals(FtcDriverStationActivityLandscape.this.getString(2131623995)) && !var2.equals(FtcDriverStationActivityLandscape.this.getString(2131624683))) {
+               if (!var2.equals(FtcDriverStationActivityLandscape.this.getString(2131624679)) && !var2.equals(FtcDriverStationActivityLandscape.this.getString(2131624684))) {
+                  FtcDriverStationActivityLandscape.this.textWifiDirectStatus.setText("Robot Connected");
+                  String var1x = var2;
+                  String var2x = var1x;
+                  if (var1x.contains("DIRECT-")) {
+                     var2x = var1x;
+                     if (var2.contains("RC")) {
+                        var2x = var2.substring(10);
+                     }
+                  }
+
+                  TextView var4 = FtcDriverStationActivityLandscape.this.network_ssid;
+                  StringBuilder var3 = new StringBuilder();
+                  var3.append("Network: ");
+                  var3.append(var2x);
+                  var4.setText(var3.toString());
+                  FtcDriverStationActivityLandscape.this.headerColorRight.setBackground(FtcDriverStationActivityLandscape.this.getResources().getDrawable(2131165343));
+                  FtcDriverStationActivityLandscape.this.headerColorLeft.setBackgroundColor(FtcDriverStationActivityLandscape.this.getResources().getColor(2131034196));
+               } else {
+                  FtcDriverStationActivityLandscape.this.headerColorRight.setBackground(FtcDriverStationActivityLandscape.this.getResources().getDrawable(2131165344));
+                  FtcDriverStationActivityLandscape.this.headerColorLeft.setBackgroundColor(FtcDriverStationActivityLandscape.this.getResources().getColor(2131034200));
+               }
+            } else {
+               FtcDriverStationActivityLandscape.this.headerColorRight.setBackground(FtcDriverStationActivityLandscape.this.getResources().getDrawable(2131165345));
+               FtcDriverStationActivityLandscape.this.headerColorLeft.setBackgroundColor(FtcDriverStationActivityLandscape.this.getResources().getColor(2131034198));
             }
-        });
-    }
 
-    /* access modifiers changed from: protected */
-    public void uiRobotControllerIsConnected(FtcDriverStationActivityBase.ControlPanelBack controlPanelBack) {
-        super.uiRobotControllerIsConnected(controlPanelBack);
-        runOnUiThread(new Runnable() {
-            public void run() {
-                FtcDriverStationActivityLandscape.this.headerColorRight.setBackground(FtcDriverStationActivityLandscape.this.getResources().getDrawable(R.drawable.lds_header_shadow_connected));
-                FtcDriverStationActivityLandscape.this.headerColorLeft.setBackgroundColor(FtcDriverStationActivityLandscape.this.getResources().getColor(R.color.lds_header_green_gradient_start));
-                FtcDriverStationActivityLandscape.this.textWifiDirectStatus.setText("Robot Connected");
-            }
-        });
-    }
+         }
+      });
+   }
 
-    /* access modifiers changed from: protected */
-    public void enableAndBrightenForConnected(FtcDriverStationActivityBase.ControlPanelBack controlPanelBack) {
-        super.enableAndBrightenForConnected(controlPanelBack);
-        setOpacity(this.configAndTimerRegion, 1.0f);
-        setOpacity(this.telemetryRegion, 1.0f);
-    }
+   public void subclassOnCreate() {
+      this.setContentView(2131427359);
+      this.headerColorLeft = (ImageView)this.findViewById(2131230918);
+      this.headerColorRight = (LinearLayout)this.findViewById(2131230919);
+      this.configAndTimerRegion = this.findViewById(2131230850);
+      this.telemetryRegion = this.findViewById(2131231110);
+      this.practiceTimerManager = new PracticeTimerManager(this, (ImageView)this.findViewById(2131231031), (TextView)this.findViewById(2131231032));
+      this.matchLoggingContainer = this.findViewById(2131230984);
+      this.matchNumTxtView = (TextView)this.findViewById(2131230987);
+      this.networkSignalLevel = (ImageView)this.findViewById(2131230997);
+      this.layoutPingChan = (LinearLayout)this.findViewById(2131230948);
+      this.textDbmLink = (TextView)this.findViewById(2131231117);
+      this.network_ssid = (TextView)this.findViewById(2131230999);
+      this.dividerRcBatt12vBatt = this.findViewById(2131230882);
+   }
 
-    /* access modifiers changed from: protected */
-    public void assumeClientConnect(FtcDriverStationActivityBase.ControlPanelBack controlPanelBack) {
-        RobotLog.vv(FtcDriverStationActivityBase.TAG, "Assuming client connected");
-        setClientConnected(true);
-        uiRobotControllerIsConnected(controlPanelBack);
-    }
+   public void toggleWifiStatsView(View var1) {
+      if (this.wiFiStatsView == FtcDriverStationActivityLandscape.WiFiStatsView.PING_CHAN) {
+         this.wiFiStatsView = FtcDriverStationActivityLandscape.WiFiStatsView.DBM_LINK;
+         this.textDbmLink.setVisibility(0);
+         this.layoutPingChan.setVisibility(8);
+      } else if (this.wiFiStatsView == FtcDriverStationActivityLandscape.WiFiStatsView.DBM_LINK) {
+         this.wiFiStatsView = FtcDriverStationActivityLandscape.WiFiStatsView.PING_CHAN;
+         this.layoutPingChan.setVisibility(0);
+         this.textDbmLink.setVisibility(8);
+      }
 
-    /* access modifiers changed from: protected */
-    public void showWifiStatus(final boolean z, final String str) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                FtcDriverStationActivityLandscape.this.textWifiDirectStatusShowingRC = z;
-                FtcDriverStationActivityLandscape.this.textWifiDirectStatus.setText(str);
-                if (str.equals(FtcDriverStationActivityLandscape.this.getString(R.string.wifiStatusDisconnected)) || str.equals(FtcDriverStationActivityLandscape.this.getString(R.string.actionlistenerfailure_busy)) || str.equals(FtcDriverStationActivityLandscape.this.getString(R.string.wifiStatusNotPaired))) {
-                    FtcDriverStationActivityLandscape.this.headerColorRight.setBackground(FtcDriverStationActivityLandscape.this.getResources().getDrawable(R.drawable.lds_header_shadow_disconnected));
-                    FtcDriverStationActivityLandscape.this.headerColorLeft.setBackgroundColor(FtcDriverStationActivityLandscape.this.getResources().getColor(R.color.lds_header_red_gradient_start));
-                } else if (str.equals(FtcDriverStationActivityLandscape.this.getString(R.string.wifiStatusConnecting)) || str.equals(FtcDriverStationActivityLandscape.this.getString(R.string.wifiStatusSearching))) {
-                    FtcDriverStationActivityLandscape.this.headerColorRight.setBackground(FtcDriverStationActivityLandscape.this.getResources().getDrawable(R.drawable.lds_header_shadow_connecting));
-                    FtcDriverStationActivityLandscape.this.headerColorLeft.setBackgroundColor(FtcDriverStationActivityLandscape.this.getResources().getColor(R.color.lds_header_yellow_gradient_start));
-                } else {
-                    FtcDriverStationActivityLandscape.this.textWifiDirectStatus.setText("Robot Connected");
-                    String str = str;
-                    if (str.contains("DIRECT-") && str.contains("RC")) {
-                        str = str.substring(10);
-                    }
-                    TextView textView = FtcDriverStationActivityLandscape.this.network_ssid;
-                    textView.setText("Network: " + str);
-                    FtcDriverStationActivityLandscape.this.headerColorRight.setBackground(FtcDriverStationActivityLandscape.this.getResources().getDrawable(R.drawable.lds_header_shadow_connected));
-                    FtcDriverStationActivityLandscape.this.headerColorLeft.setBackgroundColor(FtcDriverStationActivityLandscape.this.getResources().getColor(R.color.lds_header_green_gradient_start));
-                }
-            }
-        });
-    }
+   }
 
-    public void updateBatteryStatus(BatteryChecker.BatteryStatus batteryStatus) {
-        TextView textView = this.dsBatteryInfo;
-        setTextView(textView, "DS: " + Math.round(batteryStatus.percent) + "%");
-        setBatteryIcon(batteryStatus, this.dsBatteryIcon);
-    }
+   protected void uiRobotControllerIsConnected(FtcDriverStationActivityBase.ControlPanelBack var1) {
+      super.uiRobotControllerIsConnected(var1);
+      this.runOnUiThread(new Runnable() {
+         public void run() {
+            FtcDriverStationActivityLandscape.this.headerColorRight.setBackground(FtcDriverStationActivityLandscape.this.getResources().getDrawable(2131165343));
+            FtcDriverStationActivityLandscape.this.headerColorLeft.setBackgroundColor(FtcDriverStationActivityLandscape.this.getResources().getColor(2131034196));
+            FtcDriverStationActivityLandscape.this.textWifiDirectStatus.setText("Robot Connected");
+         }
+      });
+   }
 
-    /* access modifiers changed from: protected */
-    public void updateRcBatteryStatus(BatteryChecker.BatteryStatus batteryStatus) {
-        TextView textView = this.rcBatteryTelemetry;
-        setTextView(textView, "RC: " + Math.round(batteryStatus.percent) + "%");
-        setBatteryIcon(batteryStatus, this.rcBatteryIcon);
-    }
+   protected void uiRobotControllerIsDisconnected() {
+      super.uiRobotControllerIsDisconnected();
+      this.runOnUiThread(new Runnable() {
+         public void run() {
+            FtcDriverStationActivityLandscape.this.headerColorRight.setBackground(FtcDriverStationActivityLandscape.this.getResources().getDrawable(2131165345));
+            FtcDriverStationActivityLandscape.this.headerColorLeft.setBackgroundColor(FtcDriverStationActivityLandscape.this.getResources().getColor(2131034198));
+            FtcDriverStationActivityLandscape.this.textWifiDirectStatus.setText("Disconnected");
+         }
+      });
+   }
 
-    /* access modifiers changed from: protected */
-    public void displayRcBattery(boolean z) {
-        super.displayRcBattery(z);
-        this.dividerRcBatt12vBatt.setVisibility(z ? 0 : 8);
-    }
+   public void updateBatteryStatus(BatteryChecker.BatteryStatus var1) {
+      TextView var2 = this.dsBatteryInfo;
+      StringBuilder var3 = new StringBuilder();
+      var3.append("DS: ");
+      var3.append(Math.round(var1.percent));
+      var3.append("%");
+      this.setTextView(var2, var3.toString());
+      this.setBatteryIcon(var1, this.dsBatteryIcon);
+   }
 
-    /* access modifiers changed from: protected */
-    public void pingStatus(String str) {
-        TextView textView = this.textPingStatus;
-        setTextView(textView, "Ping: " + str + " - ");
-    }
+   protected void updateRcBatteryStatus(BatteryChecker.BatteryStatus var1) {
+      TextView var2 = this.rcBatteryTelemetry;
+      StringBuilder var3 = new StringBuilder();
+      var3.append("RC: ");
+      var3.append(Math.round(var1.percent));
+      var3.append("%");
+      this.setTextView(var2, var3.toString());
+      this.setBatteryIcon(var1, this.rcBatteryIcon);
+   }
 
-    /* access modifiers changed from: protected */
-    public void onPause() {
-        super.onPause();
-        this.practiceTimerManager.reset();
-        NetworkConnection networkConnection = this.networkConnectionHandler.getNetworkConnection();
-        if (networkConnection.getNetworkType() == NetworkType.WIRELESSAP) {
-            ((DriverStationAccessPointAssistant) networkConnection).unregisterNetworkHealthListener(this);
-        }
-    }
+   static enum WiFiStatsView {
+      DBM_LINK,
+      PING_CHAN;
 
-    /* access modifiers changed from: protected */
-    public void onResume() {
-        super.onResume();
-        NetworkConnection networkConnection = this.networkConnectionHandler.getNetworkConnection();
-        if (networkConnection.getNetworkType() == NetworkType.WIRELESSAP) {
-            ((DriverStationAccessPointAssistant) networkConnection).registerNetworkHealthListener(this);
-        }
-    }
-
-    public void onNetworkHealthUpdate(final int i, final int i2) {
-        int round = (int) Math.round(((double) ((float) (rssiToWiFiSignal(i, 5) + linkSpeedToWiFiSignal(i2, 5)))) / 2.0d);
-        final int i3 = round != 0 ? round != 1 ? round != 2 ? round != 3 ? round != 4 ? round != 5 ? 0 : R.drawable.ic_signal_bars_5 : R.drawable.ic_signal_bars_4 : R.drawable.ic_signal_bars_3 : R.drawable.ic_signal_bars_2 : R.drawable.ic_signal_bars_1 : R.drawable.ic_signal_bars_0;
-        runOnUiThread(new Runnable() {
-            public void run() {
-                FtcDriverStationActivityLandscape.this.networkSignalLevel.setBackgroundResource(i3);
-                FtcDriverStationActivityLandscape.this.textDbmLink.setText(String.format("%ddBm Link %dMb", new Object[]{Integer.valueOf(i), Integer.valueOf(i2)}));
-            }
-        });
-    }
-
-    public int linkSpeedToWiFiSignal(int i, int i2) {
-        float f = (float) i;
-        if (f <= 6.0f) {
-            return 0;
-        }
-        if (f >= 54.0f) {
-            return i2;
-        }
-        return Math.round((f - 6.0f) / (48.0f / ((float) (i2 - 1))));
-    }
-
-    public int rssiToWiFiSignal(int i, int i2) {
-        float f = (float) i;
-        if (f <= -90.0f) {
-            return 0;
-        }
-        if (f >= -55.0f) {
-            return i2;
-        }
-        return Math.round((f - -90.0f) / (35.0f / ((float) (i2 - 1))));
-    }
-
-    public void toggleWifiStatsView(View view) {
-        if (this.wiFiStatsView == WiFiStatsView.PING_CHAN) {
-            this.wiFiStatsView = WiFiStatsView.DBM_LINK;
-            this.textDbmLink.setVisibility(0);
-            this.layoutPingChan.setVisibility(8);
-        } else if (this.wiFiStatsView == WiFiStatsView.DBM_LINK) {
-            this.wiFiStatsView = WiFiStatsView.PING_CHAN;
-            this.layoutPingChan.setVisibility(0);
-            this.textDbmLink.setVisibility(8);
-        }
-    }
+      static {
+         FtcDriverStationActivityLandscape.WiFiStatsView var0 = new FtcDriverStationActivityLandscape.WiFiStatsView("DBM_LINK", 1);
+         DBM_LINK = var0;
+      }
+   }
 }

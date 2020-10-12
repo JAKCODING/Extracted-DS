@@ -1,62 +1,67 @@
 package com.qualcomm.ftcdriverstation;
 
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
-
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-public class SelectGamepadMappingDialog extends AlertDialog.Builder {
-    private ArrayAdapter<CharSequence> fieldTypeAdapter;
-    /* access modifiers changed from: private */
-    public Spinner fieldTypeSpinner;
-    /* access modifiers changed from: private */
-    public Listener listener;
+public class SelectGamepadMappingDialog extends Builder {
+   private ArrayAdapter fieldTypeAdapter;
+   private Spinner fieldTypeSpinner;
+   private SelectGamepadMappingDialog.Listener listener;
 
-    interface Listener {
-        void onOk(Gamepad.Type type);
-    }
+   public SelectGamepadMappingDialog(Context var1) {
+      super(var1);
+   }
 
-    public SelectGamepadMappingDialog(Context context) {
-        super(context);
-    }
+   private void setupTypeSpinner() {
+      this.fieldTypeAdapter = new ArrayAdapter(this.getContext(), 17367048);
+      Gamepad.Type[] var1 = Gamepad.Type.values();
+      int var2 = var1.length;
 
-    public void setListener(Listener listener2) {
-        this.listener = listener2;
-    }
+      for(int var3 = 0; var3 < var2; ++var3) {
+         Gamepad.Type var4 = var1[var3];
+         this.fieldTypeAdapter.add(var4.toString());
+      }
 
-    public AlertDialog show() {
-        setTitle("Choose Mapping");
-        LayoutInflater layoutInflater = create().getLayoutInflater();
-        FrameLayout frameLayout = new FrameLayout(getContext());
-        setView(frameLayout);
-        layoutInflater.inflate(R.layout.dialog_gamepad_mapping_type, frameLayout);
-        this.fieldTypeSpinner = (Spinner) frameLayout.findViewById(R.id.gamepadMappingSpinner);
-        setupTypeSpinner();
-        setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (SelectGamepadMappingDialog.this.listener != null) {
-                    SelectGamepadMappingDialog.this.listener.onOk(Gamepad.Type.valueOf((String) SelectGamepadMappingDialog.this.fieldTypeSpinner.getSelectedItem()));
-                }
+      this.fieldTypeAdapter.setDropDownViewResource(17367049);
+      this.fieldTypeSpinner.setAdapter(this.fieldTypeAdapter);
+   }
+
+   public void setListener(SelectGamepadMappingDialog.Listener var1) {
+      this.listener = var1;
+   }
+
+   public AlertDialog show() {
+      this.setTitle("Choose Mapping");
+      LayoutInflater var1 = this.create().getLayoutInflater();
+      FrameLayout var2 = new FrameLayout(this.getContext());
+      this.setView(var2);
+      var1.inflate(2131427389, var2);
+      this.fieldTypeSpinner = (Spinner)var2.findViewById(2131230915);
+      this.setupTypeSpinner();
+      this.setPositiveButton("OK", new OnClickListener() {
+         public void onClick(DialogInterface var1, int var2) {
+            if (SelectGamepadMappingDialog.this.listener != null) {
+               SelectGamepadMappingDialog.this.listener.onOk(Gamepad.Type.valueOf((String)SelectGamepadMappingDialog.this.fieldTypeSpinner.getSelectedItem()));
             }
-        });
-        setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogInterface, int i) {
-            }
-        });
-        return super.show();
-    }
 
-    private void setupTypeSpinner() {
-        this.fieldTypeAdapter = new ArrayAdapter<>(getContext(), 17367048);
-        for (Gamepad.Type type : Gamepad.Type.values()) {
-            this.fieldTypeAdapter.add(type.toString());
-        }
-        this.fieldTypeAdapter.setDropDownViewResource(17367049);
-        this.fieldTypeSpinner.setAdapter(this.fieldTypeAdapter);
-    }
+         }
+      });
+      this.setNegativeButton("Cancel", new OnClickListener() {
+         public void onClick(DialogInterface var1, int var2) {
+         }
+      });
+      return super.show();
+   }
+
+   interface Listener {
+      void onOk(Gamepad.Type var1);
+   }
 }
