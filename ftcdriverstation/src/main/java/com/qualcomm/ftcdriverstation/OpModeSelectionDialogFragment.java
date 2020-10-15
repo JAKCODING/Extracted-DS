@@ -24,24 +24,17 @@ public class OpModeSelectionDialogFragment extends DialogFragment {
    private int title = 0;
 
    public Dialog onCreateDialog(Bundle var1) {
-      View var2 = LayoutInflater.from(this.getActivity()).inflate(2131427420, (ViewGroup)null);
-      ((TextView)var2.findViewById(2131231013)).setText(this.title);
+      View inflate = LayoutInflater.from(this.getActivity()).inflate(R.layout.opmode_dialog_title_bar, (ViewGroup)null);
+      ((TextView)inflate.findViewById(R.id.opmodeDialogTitle)).setText(this.title);
       Builder var3 = new Builder(this.getActivity());
-      var3.setCustomTitle(var2);
+      var3.setCustomTitle(inflate);
       ArrayAdapter var4 = new ArrayAdapter(this.getActivity(), 2131427419, 2131231011, this.opModes) {
-         public View getView(int var1, View var2, ViewGroup var3) {
-            View var6 = super.getView(var1, var2, var3);
-            ImageView var5 = (ImageView)var6.findViewById(2131231012);
-            byte var4;
-            if (var1 < OpModeSelectionDialogFragment.this.opModes.size() - 1 && !((OpModeMeta)OpModeSelectionDialogFragment.this.opModes.get(var1)).group.equals(((OpModeMeta)OpModeSelectionDialogFragment.this.opModes.get(var1 + 1)).group)) {
-               var4 = 0;
-            } else {
-               var4 = 8;
-            }
-
-            var5.setVisibility(var4);
-            return var6;
+         public View getView(int i, View view, ViewGroup viewGroup) {
+            View view2 = super.getView(i, view, viewGroup);
+            ((ImageView) view2.findViewById(R.id.opmodeDialogItemTextSeparator)).setVisibility((i >= OpModeSelectionDialogFragment.this.opModes.size() + -1 || ((OpModeMeta) OpModeSelectionDialogFragment.this.opModes.get(i)).group.equals(((OpModeMeta) OpModeSelectionDialogFragment.this.opModes.get(i + 1)).group)) ? View.GONE : View.VISIBLE);
+            return view2;
          }
+
       };
       var3.setTitle(this.title);
       var3.setAdapter(var4, new OnClickListener() {
@@ -58,7 +51,7 @@ public class OpModeSelectionDialogFragment extends DialogFragment {
    public void onStart() {
       super.onStart();
       Dialog var1 = this.getDialog();
-      var1.findViewById(var1.getContext().getResources().getIdentifier("android:id/titleDivider", (String)null, (String)null)).setBackground(var1.findViewById(2131231014).getBackground());
+      var1.findViewById(var1.getContext().getResources().getIdentifier("android:id/titleDivider", (String)null, (String)null)).setBackground(var1.findViewById(R.id.opmodeDialogTitleLine).getBackground());
    }
 
    public void setOnSelectionDialogListener(OpModeSelectionDialogFragment.OpModeSelectionDialogListener var1) {

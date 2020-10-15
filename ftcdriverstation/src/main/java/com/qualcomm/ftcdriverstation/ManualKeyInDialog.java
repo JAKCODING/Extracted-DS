@@ -24,32 +24,35 @@ public class ManualKeyInDialog extends Builder {
    }
 
    public static void setSoftInputMode(Context var0, int var1) {
-      ((InputMethodManager)var0.getSystemService("input_method")).toggleSoftInput(var1, 0);
+      ((InputMethodManager)var0.getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(var1, 0);
    }
 
    public AlertDialog show() {
-      this.setTitle(this.title);
-      this.setCancelable(false);
-      View var1 = this.create().getLayoutInflater().inflate(2131427387, (ViewGroup)null, false);
-      this.input = (EditText)var1.findViewById(2131230938);
-      this.setView(var1);
-      this.setPositiveButton(17039370, new OnClickListener() {
-         public void onClick(DialogInterface var1, int var2) {
-            var1.dismiss();
+      setTitle(this.title);
+      setCancelable(false);
+      View inflate = create().getLayoutInflater().inflate(R.layout.custom_input_dialog_layout, (ViewGroup) null, false);
+      this.input = (EditText) inflate.findViewById(R.id.input);
+      setView(inflate);
+      //FIX THIS
+      setPositiveButton("positive", new DialogInterface.OnClickListener() {
+         public void onClick(DialogInterface dialogInterface, int i) {
+            dialogInterface.dismiss();
             ManualKeyInDialog.this.listener.onInput(ManualKeyInDialog.this.input.getText().toString());
             ManualKeyInDialog.setSoftInputMode(ManualKeyInDialog.this.getContext(), 1);
          }
       });
-      this.setNegativeButton(17039360, new OnClickListener() {
-         public void onClick(DialogInterface var1, int var2) {
-            var1.cancel();
+      //FIX THIS
+      setNegativeButton("negative", new DialogInterface.OnClickListener() {
+         public void onClick(DialogInterface dialogInterface, int i) {
+            dialogInterface.cancel();
             ManualKeyInDialog.setSoftInputMode(ManualKeyInDialog.this.getContext(), 1);
          }
       });
-      AlertDialog var2 = super.show();
-      this.doneBtn = var2.getButton(-1);
-      setSoftInputMode(this.getContext(), 2);
-      return var2;
+      AlertDialog show = super.show();
+      this.doneBtn = show.getButton(-1);
+      setSoftInputMode(getContext(), 2);
+      return show;
+
    }
 
    public abstract static class Listener {
