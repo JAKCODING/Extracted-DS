@@ -1167,7 +1167,7 @@ public abstract class FtcDriverStationActivityBase extends ThemedActivity implem
       }
    }
 
-   public void onPause() {
+   protected void onPause() {
       super.onPause();
       RobotLog.vv(TAG, "onPause()");
       this.gamepadManager.clearGamepadAssignments();
@@ -1205,7 +1205,7 @@ public abstract class FtcDriverStationActivityBase extends ThemedActivity implem
       RobotLog.ii("DriverStation", sb.toString());
    }
 
-   public void onResume() {
+   protected void onResume() {
       super.onResume();
       RobotLog.vv(TAG, "onResume()");
       this.disconnectFromPeerOnActivityStop = true;
@@ -1665,7 +1665,7 @@ public abstract class FtcDriverStationActivityBase extends ThemedActivity implem
    }
 
 
-   public void showWifiStatus(final boolean z, final String str) {
+   protected void showWifiStatus(final boolean z, final String str) {
       runOnUiThread(new Runnable() {
          public void run() {
             FtcDriverStationActivityBase.this.textWifiDirectStatusShowingRC = z;

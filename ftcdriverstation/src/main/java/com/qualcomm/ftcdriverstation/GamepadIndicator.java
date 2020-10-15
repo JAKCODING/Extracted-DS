@@ -51,7 +51,7 @@ public class GamepadIndicator {
       this.state = var1;
       AppUtil.getInstance().runOnUiThread(new Runnable() {
          public void run() {
-            int var1x = null.$SwitchMap$com$qualcomm$ftcdriverstation$GamepadIndicator$State[var1.ordinal()];
+            int var1x = var1.ordinal();
             if (var1x != 1) {
                if (var1x != 2) {
                   if (var1x == 3) {
@@ -75,9 +75,5 @@ public class GamepadIndicator {
       INVISIBLE,
       VISIBLE;
 
-      static {
-         GamepadIndicator.State var0 = new GamepadIndicator.State("INDICATE", 2);
-         INDICATE = var0;
-      }
    }
 }

@@ -65,18 +65,13 @@ public class OpModeSelectionDialogFragment extends DialogFragment {
       this.listener = var1;
    }
 
-   public void setOpModes(List var1) {
-      LinkedList var2 = new LinkedList(var1);
-      this.opModes = var2;
-      Collections.sort(var2, new Comparator() {
-         public int compare(OpModeMeta var1, OpModeMeta var2) {
-            int var3 = var1.group.compareTo(var2.group);
-            int var4 = var3;
-            if (var3 == 0) {
-               var4 = var1.name.compareTo(var2.name);
-            }
-
-            return var4;
+   public void setOpModes(List<OpModeMeta> list) {
+      LinkedList linkedList = new LinkedList(list);
+      this.opModes = linkedList;
+      Collections.sort(linkedList, new Comparator<OpModeMeta>() {
+         public int compare(OpModeMeta opModeMeta, OpModeMeta opModeMeta2) {
+            int compareTo = opModeMeta.group.compareTo(opModeMeta2.group);
+            return compareTo == 0 ? opModeMeta.name.compareTo(opModeMeta2.name) : compareTo;
          }
       });
    }

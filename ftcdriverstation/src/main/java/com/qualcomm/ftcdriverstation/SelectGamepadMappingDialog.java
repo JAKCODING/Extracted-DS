@@ -21,7 +21,7 @@ public class SelectGamepadMappingDialog extends Builder {
    }
 
    private void setupTypeSpinner() {
-      this.fieldTypeAdapter = new ArrayAdapter(this.getContext(), 17367048);
+      this.fieldTypeAdapter = new ArrayAdapter(this.getContext(), R);
       Gamepad.Type[] var1 = Gamepad.Type.values();
       int var2 = var1.length;
 
@@ -39,27 +39,27 @@ public class SelectGamepadMappingDialog extends Builder {
    }
 
    public AlertDialog show() {
-      this.setTitle("Choose Mapping");
-      LayoutInflater var1 = this.create().getLayoutInflater();
-      FrameLayout var2 = new FrameLayout(this.getContext());
-      this.setView(var2);
-      var1.inflate(2131427389, var2);
-      this.fieldTypeSpinner = (Spinner)var2.findViewById(2131230915);
-      this.setupTypeSpinner();
-      this.setPositiveButton("OK", new OnClickListener() {
-         public void onClick(DialogInterface var1, int var2) {
+      setTitle("Choose Mapping");
+      LayoutInflater layoutInflater = create().getLayoutInflater();
+      FrameLayout frameLayout = new FrameLayout(getContext());
+      setView(frameLayout);
+      layoutInflater.inflate(R.layout.dialog_gamepad_mapping_type, frameLayout);
+      this.fieldTypeSpinner = (Spinner) frameLayout.findViewById(R.id.gamepadMappingSpinner);
+      setupTypeSpinner();
+      setPositiveButton("OK", new DialogInterface.OnClickListener() {
+         public void onClick(DialogInterface dialogInterface, int i) {
             if (SelectGamepadMappingDialog.this.listener != null) {
-               SelectGamepadMappingDialog.this.listener.onOk(Gamepad.Type.valueOf((String)SelectGamepadMappingDialog.this.fieldTypeSpinner.getSelectedItem()));
+               SelectGamepadMappingDialog.this.listener.onOk(Gamepad.Type.valueOf((String) SelectGamepadMappingDialog.this.fieldTypeSpinner.getSelectedItem()));
             }
-
          }
       });
-      this.setNegativeButton("Cancel", new OnClickListener() {
-         public void onClick(DialogInterface var1, int var2) {
+      setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+         public void onClick(DialogInterface dialogInterface, int i) {
          }
       });
       return super.show();
    }
+
 
    interface Listener {
       void onOk(Gamepad.Type var1);

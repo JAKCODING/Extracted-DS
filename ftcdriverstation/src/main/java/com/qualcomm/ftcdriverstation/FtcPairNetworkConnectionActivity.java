@@ -232,7 +232,7 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
    public CallbackResult onNetworkConnectionEvent(NetworkConnection.NetworkEvent var1) {
       CallbackResult var2 = CallbackResult.NOT_HANDLED;
       CallbackResult var3;
-      if (null.$SwitchMap$com$qualcomm$robotcore$wifi$NetworkConnection$NetworkEvent[var1.ordinal()] != 1) {
+      if (var1.ordinal() != 1) {
          var3 = var2;
       } else {
          this.updateDevicesList();

@@ -48,119 +48,36 @@ public class GamepadManager implements RobotCoreGamepadManager, InputDeviceListe
       SoundPlayer.getInstance().preload(var1, SOUND_ID_GAMEPAD_DISCONNECT);
    }
 
-   public void assignGamepad(int var1, GamepadUser var2) {
-      synchronized(this){}
-
-      Throwable var10000;
-      label717: {
-         boolean var10001;
-         try {
+   public synchronized void assignGamepad(int i, GamepadUser gamepadUser) {
+            Map.Entry<GamepadUser, Integer> entry22;
             if (this.debug) {
-               RobotLog.dd("GamepadManager", "assigning gampadId=%d user=%s", var1, var2);
+               RobotLog.dd(TAG, "assigning gampadId=%d user=%s", new Object[]{i, gamepadUser});
             }
-         } catch (Throwable var78) {
-            var10000 = var78;
-            var10001 = false;
-            break label717;
-         }
-
-         Iterator var3;
-         try {
-            var3 = this.removedGamepadMemories.iterator();
-         } catch (Throwable var77) {
-            var10000 = var77;
-            var10001 = false;
-            break label717;
-         }
-
-         try {
-            while(var3.hasNext()) {
-               GamepadManager.RemovedGamepadMemory var4 = (GamepadManager.RemovedGamepadMemory)var3.next();
-               if (var4.user == var2) {
-                  this.removedGamepadMemories.remove(var4);
-                  break;
-               }
+            for (RemovedGamepadMemory object : this.removedGamepadMemories) {
+               if (object.user != gamepadUser) continue;
+               this.removedGamepadMemories.remove(object);
+               break;
             }
-         } catch (Throwable var76) {
-            var10000 = var76;
-            var10001 = false;
-            break label717;
-         }
-
-         Iterator var5;
-         try {
-            var5 = this.userToGamepadIdMap.entrySet().iterator();
-         } catch (Throwable var74) {
-            var10000 = var74;
-            var10001 = false;
-            break label717;
-         }
-
-         while(true) {
-            Entry var80;
-            Integer var82;
-            try {
-               if (!var5.hasNext()) {
-                  break;
+            for (Map.Entry<GamepadUser, Integer> entry22 : this.userToGamepadIdMap.entrySet()) {
+               if ((Integer)entry22.getValue() != n) continue;
+               Integer n2 = this.userToGamepadIdMap.get((Object)gamepadUser);
+               if (n2 != null) {
+                  int n3 = n2;
+                  if (n3 == n) return;
                }
-
-               var80 = (Entry)var5.next();
-               if ((Integer)var80.getValue() != var1) {
-                  continue;
-               }
-
-               var82 = (Integer)this.userToGamepadIdMap.get(var2);
-            } catch (Throwable var75) {
-               var10000 = var75;
-               var10001 = false;
-               break label717;
+               this.internalUnassignUser((GamepadUser)((Object)entry22.getKey()));
             }
-
-            if (var82 != null) {
-               int var6;
-               try {
-                  var6 = var82;
-               } catch (Throwable var73) {
-                  var10000 = var73;
-                  var10001 = false;
-                  break label717;
-               }
-
-               if (var6 == var1) {
-                  return;
-               }
-            }
-
-            try {
-               this.internalUnassignUser((GamepadUser)var80.getKey());
-            } catch (Throwable var72) {
-               var10000 = var72;
-               var10001 = false;
-               break label717;
-            }
-         }
-
-         label685:
-         try {
-            this.userToGamepadIdMap.put(var2, var1);
-            this.recentlyUnassignedUsers.remove(var2);
-            ((GamepadIndicator)this.gamepadIndicators.get(var2)).setState(GamepadIndicator.State.VISIBLE);
-            Gamepad var81 = (Gamepad)this.gamepadIdToGamepadMap.get(var1);
-            var81.setUser(var2);
-            var81.refreshTimestamp();
-            RobotLog.vv("GamepadManager", "assigned id=%d user=%s type=%s class=%s", var1, var2, var81.type(), var81.getClass().getSimpleName());
-            SoundPlayer.getInstance().play(this.context, SOUND_ID_GAMEPAD_CONNECT, 1.0F, 0, 1.0F);
+            this.userToGamepadIdMap.put(gamepadUser, n);
+            this.recentlyUnassignedUsers.remove((Object)gamepadUser);
+            this.gamepadIndicators.get((Object)gamepadUser).setState(GamepadIndicator.State.VISIBLE);
+            entry22 = this.gamepadIdToGamepadMap.get(n);
+            ((Gamepad)((Object)entry22)).setUser(gamepadUser);
+            ((Gamepad)((Object)entry22)).refreshTimestamp();
+            RobotLog.vv(TAG, "assigned id=%d user=%s type=%s class=%s", new Object[]{n, gamepadUser, ((Gamepad)((Object)entry22)).type(), entry22.getClass().getSimpleName()});
+            SoundPlayer.getInstance().play(this.context, SOUND_ID_GAMEPAD_CONNECT, 1.0f, 0, 1.0f);
             return;
-         } catch (Throwable var71) {
-            var10000 = var71;
-            var10001 = false;
-            break label685;
-         }
-      }
-
-      Throwable var79 = var10000;
-      throw var79;
    }
+
 
    public void automagicallyReassignIfPossible(InputDevice var1, GamepadManager.RemovedGamepadMemory var2) {
       if (var2.memoriesAmbiguousIfBothPositionsEmpty() && this.userToGamepadIdMap.isEmpty()) {
