@@ -20,9 +20,9 @@ public class FtcDriverStationActivityPortrait extends FtcDriverStationActivityBa
 
    protected void disableMatchLoggingUI() {
       RobotLog.ii("DriverStation", "Hide match logging UI");
-      this.matchNumField.setVisibility(4);
+      this.matchNumField.setVisibility(View.INVISIBLE);
       this.matchNumField.setEnabled(false);
-      this.findViewById(2131230986).setVisibility(4);
+      this.findViewById(R.id.matchNumLabel).setVisibility(View.GONE);
    }
 
    protected void doMatchNumFieldBehaviorInit() {
@@ -37,7 +37,7 @@ public class FtcDriverStationActivityPortrait extends FtcDriverStationActivityBa
             if (var2 == 6) {
                var2 = FtcDriverStationActivityPortrait.this.validateMatchEntry(var1.getText().toString());
                if (var2 == -1) {
-                  AppUtil.getInstance().showToast(UILocation.ONLY_LOCAL, FtcDriverStationActivityPortrait.this.getString(2131624244));
+                  AppUtil.getInstance().showToast(UILocation.ONLY_LOCAL, FtcDriverStationActivityPortrait.this.getString(R.string.invalidMatchNumber));
                   FtcDriverStationActivityPortrait.this.matchNumField.setText("");
                } else {
                   FtcDriverStationActivityPortrait.this.sendMatchNumber(var2);
@@ -47,8 +47,8 @@ public class FtcDriverStationActivityPortrait extends FtcDriverStationActivityBa
             return false;
          }
       });
-      this.findViewById(2131230818).requestFocus();
-      if (!this.preferencesHelper.readBoolean(this.getString(2131624434), false)) {
+      this.findViewById(R.id.buttonInit).requestFocus();
+      if (!this.preferencesHelper.readBoolean(this.getString(R.string.pref_match_logging_on_off), false)) {
          this.disableMatchLoggingUI();
       }
 
@@ -56,9 +56,9 @@ public class FtcDriverStationActivityPortrait extends FtcDriverStationActivityBa
 
    protected void enableMatchLoggingUI() {
       RobotLog.ii("DriverStation", "Show match logging UI");
-      this.matchNumField.setVisibility(0);
+      this.matchNumField.setVisibility(View.VISIBLE);
       this.matchNumField.setEnabled(true);
-      this.findViewById(2131230986).setVisibility(0);
+      this.findViewById(2131230986).setVisibility(View.VISIBLE);
    }
 
    protected int getMatchNumber() {

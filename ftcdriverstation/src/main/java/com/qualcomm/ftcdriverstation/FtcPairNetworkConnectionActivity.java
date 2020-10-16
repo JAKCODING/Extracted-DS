@@ -254,11 +254,11 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
          this.textViewSoftApPasswordLabel.setVisibility(0);
          this.editTextSoftApPassword.setVisibility(0);
          this.editTextSoftApPassword.setText(this.connectionOwnerPassword);
-         var2.setVisibility(0);
+         var2.setVisibility(View.VISIBLE);
       } else {
-         this.textViewSoftApPasswordLabel.setVisibility(4);
-         this.editTextSoftApPassword.setVisibility(4);
-         var2.setVisibility(4);
+         this.textViewSoftApPasswordLabel.setVisibility(View.INVISIBLE);
+         this.editTextSoftApPassword.setVisibility(View.INVISIBLE);
+         var2.setVisibility(View.INVISIBLE);
       }
 
       this.networkConnection.enable();

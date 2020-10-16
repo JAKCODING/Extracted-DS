@@ -38,8 +38,8 @@ public class GamepadOverrideEntryAdapter extends BaseAdapter implements ListAdap
       }
 
       GamepadTypeOverrideMapper.GamepadTypeOverrideEntry var5 = (GamepadTypeOverrideMapper.GamepadTypeOverrideEntry)this.gamepadOverrideEntries.get(var1);
-      ((TextView)var4.findViewById(16908309)).setText(String.format("Mapped as %s", var5.mappedType.toString()));
-      ((TextView)var4.findViewById(16908308)).setText(String.format("VID: %d, PID: %d", var5.vid, var5.pid));
+      ((TextView)var4.findViewById(android.R.id.text2)).setText(String.format("Mapped as %s", var5.mappedType.toString()));
+      ((TextView)var4.findViewById(android.R.id.text1)).setText(String.format("VID: %d, PID: %d", var5.vid, var5.pid));
       return var4;
    }
 }

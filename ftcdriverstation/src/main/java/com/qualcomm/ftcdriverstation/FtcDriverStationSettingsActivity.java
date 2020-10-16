@@ -29,7 +29,7 @@ public class FtcDriverStationSettingsActivity extends EditActivity {
    protected FtcDriverStationSettingsActivity.Result result = new FtcDriverStationSettingsActivity.Result();
 
    protected void checkForPairingMethodChange() {
-      if (NetworkType.fromString(this.prefHelper.readString(this.getString(2131624445), NetworkType.globalDefaultAsString())) != this.lastNetworkType) {
+      if (NetworkType.fromString(this.prefHelper.readString(this.getString(R.string.pref_pairing_kind), NetworkType.globalDefaultAsString())) != this.lastNetworkType) {
          this.result.prefPairingMethodChanged = true;
       }
 
@@ -45,17 +45,17 @@ public class FtcDriverStationSettingsActivity extends EditActivity {
    }
 
    protected FrameLayout getBackBar() {
-      return (FrameLayout)this.findViewById(2131230804);
+      return (FrameLayout)this.findViewById(R.id.backbar);
    }
 
    protected void onCreate(Bundle var1) {
       super.onCreate(var1);
-      this.setContentView(2131427371);
+      this.setContentView(R.layout.activity_generic_settings);
       PreferencesHelper var3 = new PreferencesHelper("FtcDriverStationSettingsActivity", this);
       this.prefHelper = var3;
-      this.lastNetworkType = NetworkType.fromString(var3.readString(this.getString(2131624445), NetworkType.globalDefaultAsString()));
-      this.clientConnected = this.prefHelper.readBoolean(this.getString(2131624448), false);
-      this.hasSpeaker = this.prefHelper.readBoolean(this.getString(2131624421), true);
+      this.lastNetworkType = NetworkType.fromString(var3.readString(this.getString(R.string.pref_pairing_kind), NetworkType.globalDefaultAsString()));
+      this.clientConnected = this.prefHelper.readBoolean(this.getString(R.string.pref_rc_connected), false);
+      this.hasSpeaker = this.prefHelper.readBoolean(this.getString(R.string.pref_has_speaker_rc), true);
       DeviceNameManagerFactory.getInstance().initializeDeviceNameIfNecessary();
       FtcDriverStationSettingsActivity.SettingsFragment var2 = new FtcDriverStationSettingsActivity.SettingsFragment();
       var1 = new Bundle();
@@ -63,7 +63,7 @@ public class FtcDriverStationSettingsActivity extends EditActivity {
       var1.putBoolean("HAS_SPEAKER", this.hasSpeaker);
       var2.setArguments(var1);
       var2.setProperties(this, this.prefHelper);
-      this.getFragmentManager().beginTransaction().replace(2131230855, var2).commit();
+      this.getFragmentManager().beginTransaction().replace(R.id.container, var2).commit();
    }
 
    public static class Result {
@@ -89,20 +89,20 @@ public class FtcDriverStationSettingsActivity extends EditActivity {
          super.onCreate(var1);
          boolean var2 = this.getArguments().getBoolean("CLIENT_CONNECTED");
          boolean var3 = this.getArguments().getBoolean("HAS_SPEAKER");
-         this.addPreferencesFromResource(2131820545);
+         this.addPreferencesFromResource(R.xml.app_settings);
          if (!var2) {
-            this.findPreference(this.getString(2131624410)).setEnabled(false);
-            this.findPreference(this.getString(2131624398)).setEnabled(false);
-            this.findPreference(this.getString(2131624450)).setEnabled(false);
+            this.findPreference(this.getString(R.string.pref_device_name_rc)).setEnabled(false);
+            this.findPreference(this.getString(R.string.pref_app_theme_rc)).setEnabled(false);
+            this.findPreference(this.getString(R.string.pref_sound_on_off_rc)).setEnabled(false);
          }
 
          if (!var3) {
-            this.findPreference(this.getString(2131624450)).setEnabled(false);
+            this.findPreference(this.getString(R.string.pref_sound_on_off_rc)).setEnabled(false);
          }
 
-         this.findPreference(this.getString(2131624444)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+         this.findPreference(this.getString(R.string.pref_pair_rc)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference var1) {
-               NetworkType var2 = NetworkType.fromString(SettingsFragment.this.prefHelper.readString(SettingsFragment.this.getString(2131624445), NetworkType.globalDefaultAsString()));
+               NetworkType var2 = NetworkType.fromString(SettingsFragment.this.prefHelper.readString(SettingsFragment.this.getString(R.string.pref_pairing_kind), NetworkType.globalDefaultAsString()));
                StringBuilder var3 = new StringBuilder();
                var3.append("prefPair clicked ");
                var3.append(var2);
@@ -117,29 +117,29 @@ public class FtcDriverStationSettingsActivity extends EditActivity {
                return false;
             }
          });
-         this.findPreference(this.getString(2131624424)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+         this.findPreference(this.getString(R.string.pref_launch_advanced_rc_settings)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference var1) {
                RobotLog.vv("FtcDriverStationSettingsActivity", "prefAdvanced clicked");
                SettingsFragment.this.activity.result.prefAdvancedClicked = true;
                return false;
             }
          });
-         this.findPreference(this.getString(2131624406)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+         this.findPreference(this.getString(R.string.pref_debug_driver_station_logs)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference var1) {
                RobotLog.vv("FtcDriverStationSettingsActivity", "prefLogs clicked");
                SettingsFragment.this.activity.result.prefLogsClicked = true;
                return false;
             }
          });
-         this.findPreference(this.getString(2131624407)).setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+         this.findPreference(this.getString(R.string.pref_device_name)).setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference var1, Object var2) {
                if (var2 instanceof String && WifiDirectDeviceNameManager.validDeviceName((String)var2)) {
                   return true;
                } else {
                   Builder var3 = new Builder(SettingsFragment.this.getActivity());
-                  var3.setTitle(SettingsFragment.this.getString(2131624479));
-                  var3.setMessage(SettingsFragment.this.getString(2131624478));
-                  var3.setPositiveButton(17039370, (OnClickListener)null);
+                  var3.setTitle(SettingsFragment.this.getString(R.string.prefedit_device_name_invalid_title));
+                  var3.setMessage(SettingsFragment.this.getString(R.string.prefedit_device_name_invalid_text));
+                  var3.setPositiveButton(android.R.string.ok, (OnClickListener)null);
                   var3.show();
                   return false;
                }

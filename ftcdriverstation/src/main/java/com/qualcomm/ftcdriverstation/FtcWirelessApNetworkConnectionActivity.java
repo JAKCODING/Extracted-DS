@@ -29,7 +29,7 @@ public class FtcWirelessApNetworkConnectionActivity extends BaseActivity impleme
    private TextView textViewWirelessApStatus;
 
    protected FrameLayout getBackBar() {
-      return (FrameLayout)this.findViewById(2131230804);
+      return (FrameLayout)this.findViewById(0x7f080054);
    }
 
    public String getTag() {

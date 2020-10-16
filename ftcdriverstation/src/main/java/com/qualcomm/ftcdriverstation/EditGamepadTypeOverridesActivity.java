@@ -46,7 +46,7 @@ public class EditGamepadTypeOverridesActivity extends Activity {
       this.detectionDialog.setProgressStyle(0);
       this.detectionDialog.setButton(-2, "Abort", new OnClickListener() {
          public void onClick(DialogInterface var1, int var2) {
-            Toast.makeText(EditGamepadTypeOverridesActivity.this, "Aborted gamepad detection", 0).show();
+            Toast.makeText(EditGamepadTypeOverridesActivity.this, "Aborted gamepad detection", Toast.LENGTH_SHORT).show();
          }
       });
       this.detectionDialog.setListener(new KeyEventCapturingProgressDialog.Listener() {
@@ -122,11 +122,11 @@ public class EditGamepadTypeOverridesActivity extends Activity {
 
    protected void onCreate(Bundle var1) {
       super.onCreate(var1);
-      this.setContentView(2131427362);
+      this.setContentView(R.layout.activity_edit_gamepad_type_overrides);
       GamepadTypeOverrideMapper var2 = new GamepadTypeOverrideMapper(this);
       this.mapper = var2;
       this.entries.addAll(var2.getEntries());
-      this.listView = (ListView)this.findViewById(2131231017);
+      this.listView = (ListView)this.findViewById(R.id.overridesList);
       GamepadOverrideEntryAdapter var3 = new GamepadOverrideEntryAdapter(this, 17367044, this.entries);
       this.overrideEntryAdapter = var3;
       this.listView.setAdapter(var3);

@@ -21,11 +21,15 @@ public class PermissionValidatorWrapper extends PermissionValidatorActivity {
 
    public String mapPermissionToExplanation(String var1) {
       if (var1.equals("android.permission.WRITE_EXTERNAL_STORAGE")) {
-         return Misc.formatForUser(2131624382);
+         return Misc.formatForUser((int) R.string.permDsWriteExternalStorageExplain);
       } else if (var1.equals("android.permission.READ_EXTERNAL_STORAGE")) {
-         return Misc.formatForUser(2131624381);
-      } else {
-         return var1.equals("android.permission.ACCESS_COARSE_LOCATION") ? Misc.formatForUser(2131624380) : Misc.formatForUser(2131624383);
+         return Misc.formatForUser((int) R.string.permDsReadExternalStorageExplain);
+      }
+       else if (var1.equals("android.permission.ACCESS_COARSE_LOCATION")) {
+         return Misc.formatForUser((int) R.string.permAccessLocationExplain);
+      }
+      else {
+         return Misc.formatForUser((int) R.string.permGenericExplain);
       }
    }
 
@@ -37,8 +41,8 @@ public class PermissionValidatorWrapper extends PermissionValidatorActivity {
 
    protected Class onStartApplication() {
       FtcDriverStationActivityBase.setPermissionsValidated();
-      String var1 = this.getResources().getString(2131624245);
-      String var2 = this.getResources().getString(2131624186);
+      String var1 = this.getResources().getString(R.string.key_ds_layout);
+      String var2 = this.getResources().getString(R.string.ds_ui_portrait);
       return this.sharedPreferences.getString(var1, var2).equals(var2) ? FtcDriverStationActivityPortrait.class : FtcDriverStationActivityLandscape.class;
    }
 }

@@ -30,7 +30,7 @@ public class SelectGamepadMappingDialog extends Builder {
          this.fieldTypeAdapter.add(var4.toString());
       }
 
-      this.fieldTypeAdapter.setDropDownViewResource(17367049);
+      this.fieldTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
       this.fieldTypeSpinner.setAdapter(this.fieldTypeAdapter);
    }
 
