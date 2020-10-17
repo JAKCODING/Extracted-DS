@@ -122,14 +122,14 @@ public class PracticeTimerManager {
       SoundPool var4 = new SoundPool(9, 3, 0);
       this.soundPool = var4;
       this.SOUND_ID_PICK_UP_CTRLS = var4.load(var1, 2131558415, 1);
-      this.SOUND_ID_TELE_COUNTDOWN = this.soundPool.load(var1, 2131558414, 1);
-      this.SOUND_ID_FIREBELL = this.soundPool.load(var1, 2131558412, 1);
-      this.SOUND_ID_FACTWHISTLE = this.soundPool.load(var1, 2131558411, 1);
-      this.SOUND_ID_END_MATCH = this.soundPool.load(var1, 2131558409, 1);
-      this.SOUND_ID_ABORT_MATCH = this.soundPool.load(var1, 2131558413, 1);
-      this.SOUND_ID_START_AUTO = this.soundPool.load(var1, 2131558400, 1);
-      this.SOUND_ID_END_AUTO = this.soundPool.load(var1, 2131558408, 1);
-      this.SOUND_ID_MC_BEGIN_AUTO = this.soundPool.load(var1, 2131558417, 1);
+      this.SOUND_ID_TELE_COUNTDOWN = this.soundPool.load(var1, R.raw.lady_3_2_1, 1);
+      this.SOUND_ID_FIREBELL = this.soundPool.load(var1, R.raw.firebell, 1);
+      this.SOUND_ID_FACTWHISTLE = this.soundPool.load(var1, R.raw.factwhistle, 1);
+      this.SOUND_ID_END_MATCH = this.soundPool.load(var1, R.raw.endmatch, 1);
+      this.SOUND_ID_ABORT_MATCH = this.soundPool.load(var1, R.raw.fogblast, 1);
+      this.SOUND_ID_START_AUTO = this.soundPool.load(var1, R.raw.charge, 1);
+      this.SOUND_ID_END_AUTO = this.soundPool.load(var1, R.raw.endauto, 1);
+      this.SOUND_ID_MC_BEGIN_AUTO = this.soundPool.load(var1, R.raw.mc_begin_match, 1);
    }
 
    private void autoEndTimer() {
@@ -152,7 +152,7 @@ public class PracticeTimerManager {
          label117:
          try {
             this.playSound(this.SOUND_ID_END_AUTO);
-            this.timerView.setTextColor(this.theContext.getResources().getColor(2131034250));
+            this.timerView.setTextColor(this.theContext.getResources().getColor(R.color.practice_timer_font_white));
             this.timerView.setText(this.formatTimeLeft(120000L));
             CountDownTimer var15 = new CountDownTimer(3000L, 100L) {
                public void onFinish() {
@@ -204,7 +204,7 @@ public class PracticeTimerManager {
          label117:
          try {
             this.playSound(this.SOUND_ID_START_AUTO);
-            this.timerView.setTextColor(this.theContext.getResources().getColor(2131034250));
+            this.timerView.setTextColor(this.theContext.getResources().getColor(R.color.practice_timer_font_white));
             CountDownTimer var15 = new CountDownTimer(30000L, 100L) {
                public void onFinish() {
                   PracticeTimerManager.this.autoEndTimer();
@@ -256,7 +256,7 @@ public class PracticeTimerManager {
          label117:
          try {
             this.playSound(this.SOUND_ID_END_MATCH);
-            this.timerView.setTextColor(this.theContext.getResources().getColor(2131034250));
+            this.timerView.setTextColor(this.theContext.getResources().getColor(R.color.practice_timer_font_white));
             this.timerView.setText(this.formatTimeLeft(0L));
             CountDownTimer var15 = new CountDownTimer(2000L, 100L) {
                public void onFinish() {
@@ -382,7 +382,7 @@ public class PracticeTimerManager {
          label117:
          try {
             this.playSound(this.SOUND_ID_MC_BEGIN_AUTO);
-            this.timerView.setTextColor(this.theContext.getResources().getColor(2131034251));
+            this.timerView.setTextColor(this.theContext.getResources().getColor(R.color.practice_timer_font_yellow));
             this.timerView.setText(this.formatTimeLeft(150000L));
             CountDownTimer var15 = new CountDownTimer(5275L, 100L) {
                public void onFinish() {
@@ -434,7 +434,7 @@ public class PracticeTimerManager {
          label117:
          try {
             this.playSound(this.SOUND_ID_PICK_UP_CTRLS);
-            this.timerView.setTextColor(this.theContext.getResources().getColor(2131034251));
+            this.timerView.setTextColor(this.theContext.getResources().getColor(R.color.practice_timer_font_yellow));
             CountDownTimer var15 = new CountDownTimer(5000L, 100L) {
                public void onFinish() {
                   PracticeTimerManager.this.teleCountDownTimer();
@@ -490,7 +490,7 @@ public class PracticeTimerManager {
          label117:
          try {
             this.playSound(this.SOUND_ID_TELE_COUNTDOWN);
-            this.timerView.setTextColor(this.theContext.getResources().getColor(2131034249));
+            this.timerView.setTextColor(this.theContext.getResources().getColor(R.color.practice_timer_font_red));
             CountDownTimer var15 = new CountDownTimer(3000L, 100L) {
                public void onFinish() {
                   PracticeTimerManager.this.teleopTimer();
@@ -542,7 +542,7 @@ public class PracticeTimerManager {
          label117:
          try {
             this.playSound(this.SOUND_ID_FIREBELL);
-            this.timerView.setTextColor(this.theContext.getResources().getColor(2131034250));
+            this.timerView.setTextColor(this.theContext.getResources().getColor(R.color.practice_timer_font_white));
             CountDownTimer var15 = new CountDownTimer(90000L, 100L) {
                public void onFinish() {
                   PracticeTimerManager.this.endgameTimer();
@@ -626,9 +626,9 @@ public class PracticeTimerManager {
    }
 
    void resetUi() {
-      this.timerView.setTextColor(this.theContext.getResources().getColor(2131034250));
+      this.timerView.setTextColor(this.theContext.getResources().getColor(R.color.practice_timer_font_white));
       this.timerView.setText(this.formatTimeLeft(150000L));
-      this.startStopBtn.setImageDrawable(this.theContext.getResources().getDrawable(2131165317));
+      this.startStopBtn.setImageDrawable(this.theContext.getResources().getDrawable(R.drawable.ic_play_circle_filled_24dp));
    }
 
    void showStartDialog(Context var1) {
@@ -637,7 +637,7 @@ public class PracticeTimerManager {
       android.content.DialogInterface.OnClickListener var3 = new android.content.DialogInterface.OnClickListener() {
          public void onClick(DialogInterface var1, int var2) {
             PracticeTimerManager.this.running = true;
-            PracticeTimerManager.this.startStopBtn.setImageDrawable(PracticeTimerManager.this.theContext.getResources().getDrawable(2131165325));
+            PracticeTimerManager.this.startStopBtn.setImageDrawable(PracticeTimerManager.this.theContext.getResources().getDrawable(R.drawable.ic_stop_24dp));
             if (var2 != 0) {
                if (var2 != 1) {
                   if (var2 != 2) {

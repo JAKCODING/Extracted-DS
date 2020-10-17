@@ -2,6 +2,7 @@ package com.qualcomm.ftcdriverstation;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
@@ -25,15 +26,15 @@ public class GamepadIndicator {
    }
 
    protected void indicate() {
-      Animation var1 = AnimationUtils.loadAnimation(this.context, 2130771993);
-      this.activeView.setImageResource(2131165339);
+      Animation var1 = AnimationUtils.loadAnimation(this.context, R.anim.fadeout);
+      this.activeView.setImageResource(R.drawable.icon_controlleractive);
       var1.setAnimationListener(new AnimationListener() {
          public void onAnimationEnd(Animation var1) {
-            GamepadIndicator.this.activeView.setImageResource(2131165338);
+            GamepadIndicator.this.activeView.setImageResource(R.drawable.icon_controller);
          }
 
          public void onAnimationRepeat(Animation var1) {
-            GamepadIndicator.this.activeView.setImageResource(2131165338);
+            GamepadIndicator.this.activeView.setImageResource(R.drawable.icon_controller);
          }
 
          public void onAnimationStart(Animation var1) {
@@ -58,12 +59,12 @@ public class GamepadIndicator {
                      GamepadIndicator.this.indicate();
                   }
                } else {
-                  GamepadIndicator.this.activeView.setVisibility(4);
-                  GamepadIndicator.this.baseView.setVisibility(0);
+                  GamepadIndicator.this.activeView.setVisibility(View.INVISIBLE);
+                  GamepadIndicator.this.baseView.setVisibility(View.VISIBLE);
                }
             } else {
-               GamepadIndicator.this.activeView.setVisibility(4);
-               GamepadIndicator.this.baseView.setVisibility(4);
+               GamepadIndicator.this.activeView.setVisibility(View.INVISIBLE);
+               GamepadIndicator.this.baseView.setVisibility(View.INVISIBLE);
             }
 
          }

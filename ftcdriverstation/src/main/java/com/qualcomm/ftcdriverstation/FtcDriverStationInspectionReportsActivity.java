@@ -25,9 +25,9 @@ public class FtcDriverStationInspectionReportsActivity extends BaseActivity {
       DeviceNameManagerFactory.getInstance().initializeDeviceNameIfNecessary();
       FtcDriverStationInspectionReportsActivity.SettingsFragment var2 = new FtcDriverStationInspectionReportsActivity.SettingsFragment();
       var1 = new Bundle();
-      var1.putBoolean("CLIENT_CONNECTED", (new PreferencesHelper("FtcDriverStationInspectionReportsActivity", this)).readBoolean(this.getString(R.class.pref_rc_connected), false));
+      var1.putBoolean("CLIENT_CONNECTED", (new PreferencesHelper("FtcDriverStationInspectionReportsActivity", this)).readBoolean(this.getString(R.string.pref_rc_connected), false));
       var2.setArguments(var1);
-      this.getFragmentManager().beginTransaction().replace(R.id.container, var2).commit();
+      this.getFragmentManager().beginTransaction().replace(2131230855, var2).commit();
    }
 
    public static class SettingsFragment extends PreferenceFragment {
@@ -36,7 +36,7 @@ public class FtcDriverStationInspectionReportsActivity extends BaseActivity {
       public void onCreate(Bundle var1) {
          super.onCreate(var1);
          this.clientConnected = this.getArguments().getBoolean("CLIENT_CONNECTED");
-         this.addPreferencesFromResource(R.xml.inspection);
+         this.addPreferencesFromResource(2131820550);
          if (!this.clientConnected) {
             this.findPreference(this.getString(R.string.pref_launch_inspect_rc)).setEnabled(false);
          }

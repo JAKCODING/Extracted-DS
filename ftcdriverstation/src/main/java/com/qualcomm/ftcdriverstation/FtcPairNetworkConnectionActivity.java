@@ -65,11 +65,11 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
    }
 
    private void updateDevicesList() {
-      RadioGroup var1 = (RadioGroup)this.findViewById(R.class.radioGroupDevices);
+      RadioGroup var1 = (RadioGroup)this.findViewById(R.id.radioGroupDevices);
       var1.clearCheck();
       var1.removeAllViews();
       FtcPairNetworkConnectionActivity.PeerRadioButton var2 = new FtcPairNetworkConnectionActivity.PeerRadioButton(this);
-      String var3 = this.getString(R.class.connection_owner_default);
+      String var3 = this.getString(R.string.connection_owner_default);
       var2.setId(0);
       var2.setText("None\nDo not pair with any device");
       var2.setPadding(0, 0, 0, 24);
@@ -158,7 +158,7 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
    }
 
    protected FrameLayout getBackBar() {
-      return (FrameLayout)this.findViewById(R.class.backbar);
+      return (FrameLayout)this.findViewById(R.id.backbar);
    }
 
    public String getTag() {
@@ -169,14 +169,14 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
       if (var1 instanceof FtcPairNetworkConnectionActivity.PeerRadioButton) {
          FtcPairNetworkConnectionActivity.PeerRadioButton var2 = (FtcPairNetworkConnectionActivity.PeerRadioButton)var1;
          if (var2.getId() == 0) {
-            this.connectionOwnerIdentity = this.getString(R.class.connection_owner_default);
-            this.connectionOwnerPassword = this.getString(R.class.connection_owner_password_default);
+            this.connectionOwnerIdentity = this.getString(R.string.connection_owner_default);
+            this.connectionOwnerPassword = this.getString(R.string.connection_owner_password_default);
          } else {
             this.connectionOwnerIdentity = var2.getDeviceIdentity();
          }
 
          Editor var3 = this.sharedPref.edit();
-         var3.putString(this.getString(R.class.pref_connection_owner_identity), this.connectionOwnerIdentity);
+         var3.putString(this.getString(R.string.pref_connection_owner_identity), this.connectionOwnerIdentity);
          var3.apply();
          StringBuilder var4 = new StringBuilder();
          var4.append("Setting Driver Station name to ");
@@ -188,10 +188,10 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
 
    protected void onCreate(Bundle var1) {
       super.onCreate(var1);
-      this.setContentView(R.class.activity_ftc_network_connection);
+      this.setContentView(R.layout.activity_ftc_network_connection);
       NetworkType var2 = NetworkType.fromString(PreferenceManager.getDefaultSharedPreferences(this.getBaseContext()).getString("NETWORK_CONNECTION_TYPE", NetworkType.globalDefaultAsString()));
-      this.editTextSoftApPassword = (EditText)this.findViewById(R.class.editTextSoftApPassword);
-      this.textViewSoftApPasswordLabel = (TextView)this.findViewById(R.class.textViewSoftApPasswordLabel);
+      this.editTextSoftApPassword = (EditText)this.findViewById(R.id.editTextSoftApPassword);
+      this.textViewSoftApPasswordLabel = (TextView)this.findViewById(R.id.textViewSoftApPasswordLabel);
       NetworkConnection var6 = NetworkConnectionFactory.getNetworkConnection(var2, this.getBaseContext());
       this.networkConnection = var6;
       String var7 = var6.getDeviceName();
@@ -199,24 +199,24 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
          this.teamNum = this.getTeamNumber(var7);
       } else {
          this.teamNum = 0;
-         var7 = this.getString(R.class.wifi_direct_name_unknown);
+         var7 = this.getString(R.string.wifi_direct_name_unknown);
       }
 
-      TextView var3 = (TextView)this.findViewById(R.class.textWifiInstructions);
-      TextView var4 = (TextView)this.findViewById(R.class.textViewWifiName);
-      TextView var5 = (TextView)this.findViewById(R.class.textViewWifiNameLabel);
+      TextView var3 = (TextView)this.findViewById(R.id.textWifiInstructions);
+      TextView var4 = (TextView)this.findViewById(R.id.textViewWifiName);
+      TextView var5 = (TextView)this.findViewById(R.id.textViewWifiNameLabel);
       if (var2 == NetworkType.WIFIDIRECT) {
-         var3.setText(this.getString(R.class.pair_instructions));
-         var4.setVisibility(0);
+         var3.setText(this.getString(R.string.pair_instructions));
+         var4.setVisibility(View.VISIBLE);
          var4.setText(var7);
-         var5.setVisibility(0);
+         var5.setVisibility(View.VISIBLE);
       } else if (var2 == NetworkType.SOFTAP) {
-         var3.setText(this.getString(R.class.softap_instructions));
-         var4.setVisibility(4);
-         var5.setVisibility(4);
+         var3.setText(this.getString(R.string.softap_instructions));
+         var4.setVisibility(View.INVISIBLE);
+         var5.setVisibility(View.INVISIBLE);
       }
 
-      ((Switch)this.findViewById(R.class.wifi_filter)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
+      ((Switch)this.findViewById(R.id.wifi_filter)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
          public void onCheckedChanged(CompoundButton var1, boolean var2) {
             if (var2) {
                FtcPairNetworkConnectionActivity.this.filterForTeam = true;
@@ -282,7 +282,7 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
       var1.apply();
    }
 
-   public static class PeerRadioButton extends RadioButton {
+   public static class PeerRadioButton extends androidx.appcompat.widget.AppCompatRadioButton {
       private String deviceIdentity = "";
 
       public PeerRadioButton(Context var1) {
