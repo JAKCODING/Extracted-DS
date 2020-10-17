@@ -12,7 +12,7 @@ public class FtcDriverStationInspectionReportsActivity extends BaseActivity {
    public static final String TAG = "FtcDriverStationInspectionReportsActivity";
 
    protected FrameLayout getBackBar() {
-      return (FrameLayout)this.findViewById(2131230804);
+      return (FrameLayout)this.findViewById(R.id.backbar);
    }
 
    public String getTag() {
@@ -21,13 +21,13 @@ public class FtcDriverStationInspectionReportsActivity extends BaseActivity {
 
    protected void onCreate(Bundle var1) {
       super.onCreate(var1);
-      this.setContentView(2131427371);
+      this.setContentView(R.layout.activity_generic_settings);
       DeviceNameManagerFactory.getInstance().initializeDeviceNameIfNecessary();
       FtcDriverStationInspectionReportsActivity.SettingsFragment var2 = new FtcDriverStationInspectionReportsActivity.SettingsFragment();
       var1 = new Bundle();
-      var1.putBoolean("CLIENT_CONNECTED", (new PreferencesHelper("FtcDriverStationInspectionReportsActivity", this)).readBoolean(this.getString(2131624448), false));
+      var1.putBoolean("CLIENT_CONNECTED", (new PreferencesHelper("FtcDriverStationInspectionReportsActivity", this)).readBoolean(this.getString(R.class.pref_rc_connected), false));
       var2.setArguments(var1);
-      this.getFragmentManager().beginTransaction().replace(2131230855, var2).commit();
+      this.getFragmentManager().beginTransaction().replace(R.id.container, var2).commit();
    }
 
    public static class SettingsFragment extends PreferenceFragment {
@@ -36,9 +36,9 @@ public class FtcDriverStationInspectionReportsActivity extends BaseActivity {
       public void onCreate(Bundle var1) {
          super.onCreate(var1);
          this.clientConnected = this.getArguments().getBoolean("CLIENT_CONNECTED");
-         this.addPreferencesFromResource(2131820550);
+         this.addPreferencesFromResource(R.xml.inspection);
          if (!this.clientConnected) {
-            this.findPreference(this.getString(2131624426)).setEnabled(false);
+            this.findPreference(this.getString(R.string.pref_launch_inspect_rc)).setEnabled(false);
          }
 
       }

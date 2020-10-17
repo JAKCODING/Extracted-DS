@@ -29,7 +29,7 @@ public class FtcWirelessApNetworkConnectionActivity extends BaseActivity impleme
    private TextView textViewWirelessApStatus;
 
    protected FrameLayout getBackBar() {
-      return (FrameLayout)this.findViewById(0x7f080054);
+      return (FrameLayout)this.findViewById(R.id.backbar);
    }
 
    public String getTag() {
@@ -41,10 +41,10 @@ public class FtcWirelessApNetworkConnectionActivity extends BaseActivity impleme
 
    protected void onCreate(Bundle var1) {
       super.onCreate(var1);
-      this.setContentView(2131427370);
+      this.setContentView(R.layout.activity_ftc_wireless_ap_connection);
       this.networkConnection = DriverStationAccessPointAssistant.getDriverStationAccessPointAssistant(this.getBaseContext());
-      this.textViewCurrentAp = (TextView)this.findViewById(2131231138);
-      ((Button)this.findViewById(2131230827)).setOnClickListener(new OnClickListener() {
+      this.textViewCurrentAp = (TextView)this.findViewById(R.id.textViewCurrentAp);
+      ((Button)this.findViewById(R.id.buttonWirelessApSettings)).setOnClickListener(new OnClickListener() {
          public void onClick(View var1) {
             FtcWirelessApNetworkConnectionActivity.this.startActivity(new Intent("android.settings.WIFI_SETTINGS"));
          }

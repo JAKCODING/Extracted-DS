@@ -65,11 +65,11 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
    }
 
    private void updateDevicesList() {
-      RadioGroup var1 = (RadioGroup)this.findViewById(2131231036);
+      RadioGroup var1 = (RadioGroup)this.findViewById(R.class.radioGroupDevices);
       var1.clearCheck();
       var1.removeAllViews();
       FtcPairNetworkConnectionActivity.PeerRadioButton var2 = new FtcPairNetworkConnectionActivity.PeerRadioButton(this);
-      String var3 = this.getString(2131624149);
+      String var3 = this.getString(R.class.connection_owner_default);
       var2.setId(0);
       var2.setText("None\nDo not pair with any device");
       var2.setPadding(0, 0, 0, 24);
@@ -158,7 +158,7 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
    }
 
    protected FrameLayout getBackBar() {
-      return (FrameLayout)this.findViewById(2131230804);
+      return (FrameLayout)this.findViewById(R.class.backbar);
    }
 
    public String getTag() {
@@ -169,14 +169,14 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
       if (var1 instanceof FtcPairNetworkConnectionActivity.PeerRadioButton) {
          FtcPairNetworkConnectionActivity.PeerRadioButton var2 = (FtcPairNetworkConnectionActivity.PeerRadioButton)var1;
          if (var2.getId() == 0) {
-            this.connectionOwnerIdentity = this.getString(2131624149);
-            this.connectionOwnerPassword = this.getString(2131624150);
+            this.connectionOwnerIdentity = this.getString(R.class.connection_owner_default);
+            this.connectionOwnerPassword = this.getString(R.class.connection_owner_password_default);
          } else {
             this.connectionOwnerIdentity = var2.getDeviceIdentity();
          }
 
          Editor var3 = this.sharedPref.edit();
-         var3.putString(this.getString(2131624404), this.connectionOwnerIdentity);
+         var3.putString(this.getString(R.class.pref_connection_owner_identity), this.connectionOwnerIdentity);
          var3.apply();
          StringBuilder var4 = new StringBuilder();
          var4.append("Setting Driver Station name to ");
@@ -188,10 +188,10 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
 
    protected void onCreate(Bundle var1) {
       super.onCreate(var1);
-      this.setContentView(2131427367);
+      this.setContentView(R.class.activity_ftc_network_connection);
       NetworkType var2 = NetworkType.fromString(PreferenceManager.getDefaultSharedPreferences(this.getBaseContext()).getString("NETWORK_CONNECTION_TYPE", NetworkType.globalDefaultAsString()));
-      this.editTextSoftApPassword = (EditText)this.findViewById(2131230887);
-      this.textViewSoftApPasswordLabel = (TextView)this.findViewById(2131231143);
+      this.editTextSoftApPassword = (EditText)this.findViewById(R.class.editTextSoftApPassword);
+      this.textViewSoftApPasswordLabel = (TextView)this.findViewById(R.class.textViewSoftApPasswordLabel);
       NetworkConnection var6 = NetworkConnectionFactory.getNetworkConnection(var2, this.getBaseContext());
       this.networkConnection = var6;
       String var7 = var6.getDeviceName();
@@ -199,24 +199,24 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
          this.teamNum = this.getTeamNumber(var7);
       } else {
          this.teamNum = 0;
-         var7 = this.getString(2131624687);
+         var7 = this.getString(R.class.wifi_direct_name_unknown);
       }
 
-      TextView var3 = (TextView)this.findViewById(2131231148);
-      TextView var4 = (TextView)this.findViewById(2131231144);
-      TextView var5 = (TextView)this.findViewById(2131231145);
+      TextView var3 = (TextView)this.findViewById(R.class.textWifiInstructions);
+      TextView var4 = (TextView)this.findViewById(R.class.textViewWifiName);
+      TextView var5 = (TextView)this.findViewById(R.class.textViewWifiNameLabel);
       if (var2 == NetworkType.WIFIDIRECT) {
-         var3.setText(this.getString(2131624372));
+         var3.setText(this.getString(R.class.pair_instructions));
          var4.setVisibility(0);
          var4.setText(var7);
          var5.setVisibility(0);
       } else if (var2 == NetworkType.SOFTAP) {
-         var3.setText(this.getString(2131624571));
+         var3.setText(this.getString(R.class.softap_instructions));
          var4.setVisibility(4);
          var5.setVisibility(4);
       }
 
-      ((Switch)this.findViewById(2131231191)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
+      ((Switch)this.findViewById(R.class.wifi_filter)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
          public void onCheckedChanged(CompoundButton var1, boolean var2) {
             if (var2) {
                FtcPairNetworkConnectionActivity.this.filterForTeam = true;
@@ -247,12 +247,12 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
       RobotLog.ii("FtcPairNetworkConnection", "Starting Pairing with Driver Station activity");
       SharedPreferences var1 = PreferenceManager.getDefaultSharedPreferences(this);
       this.sharedPref = var1;
-      this.connectionOwnerIdentity = var1.getString(this.getString(2131624404), this.getString(2131624149));
-      TextView var2 = (TextView)this.findViewById(2131231142);
+      this.connectionOwnerIdentity = var1.getString(this.getString(R.string.pref_connection_owner_identity), this.getString(R.string.connection_owner_default));
+      TextView var2 = (TextView)this.findViewById(R.id.textViewSoftApPasswordInstructions);
       if (this.networkConnection.getNetworkType() == NetworkType.SOFTAP) {
-         this.connectionOwnerPassword = this.sharedPref.getString(this.getString(2131624405), this.getString(2131624150));
-         this.textViewSoftApPasswordLabel.setVisibility(0);
-         this.editTextSoftApPassword.setVisibility(0);
+         this.connectionOwnerPassword = this.sharedPref.getString(this.getString(R.string.pref_connection_owner_password), this.getString(R.string.connection_owner_password_default));
+         this.textViewSoftApPasswordLabel.setVisibility(View.VISIBLE);
+         this.editTextSoftApPassword.setVisibility(View.VISIBLE);
          this.editTextSoftApPassword.setText(this.connectionOwnerPassword);
          var2.setVisibility(View.VISIBLE);
       } else {
@@ -278,7 +278,7 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
       this.networkConnection.disable();
       this.connectionOwnerPassword = this.editTextSoftApPassword.getText().toString();
       Editor var1 = this.sharedPref.edit();
-      var1.putString(this.getString(2131624405), this.connectionOwnerPassword);
+      var1.putString(this.getString(R.string.pref_connection_owner_password), this.connectionOwnerPassword);
       var1.apply();
    }
 

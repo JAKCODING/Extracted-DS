@@ -1452,7 +1452,7 @@ public abstract class FtcDriverStationActivityBase extends ThemedActivity implem
    protected boolean setClientConnected(final boolean clientConnected) {
       final boolean clientConnected2 = this.clientConnected;
       this.clientConnected = clientConnected;
-      this.preferencesHelper.writeBooleanPrefIfDifferent(this.getString(2131624448), clientConnected);
+      this.preferencesHelper.writeBooleanPrefIfDifferent(this.getString(R.string.pref_rc_connected), clientConnected);
       return clientConnected2;
    }
 
@@ -1648,13 +1648,13 @@ public abstract class FtcDriverStationActivityBase extends ThemedActivity implem
          public void run() {
             if (FtcDriverStationActivityBase.this.networkConnectionHandler.getWifiChannel() > 0) {
                FtcDriverStationActivityBase.this.textWifiChannel.setText("ch " + FtcDriverStationActivityBase.this.networkConnectionHandler.getWifiChannel());
-               FtcDriverStationActivityBase.this.textWifiChannel.setVisibility(0);
+               FtcDriverStationActivityBase.this.textWifiChannel.setVisibility(View.VISIBLE);
                return;
             }
             int i = FtcDriverStationActivityBase.this.preferences.getInt(FtcDriverStationActivityBase.this.getString(R.string.pref_wifip2p_channel), -1);
             if (i == -1) {
                RobotLog.vv(FtcDriverStationActivityBase.TAG, "pref_wifip2p_channel: showWifiChannel prefChannel not found");
-               FtcDriverStationActivityBase.this.textWifiChannel.setVisibility(8);
+               FtcDriverStationActivityBase.this.textWifiChannel.setVisibility(View.GONE);
                return;
             }
             RobotLog.vv(FtcDriverStationActivityBase.TAG, "pref_wifip2p_channel: showWifiChannel prefChannel = %d", Integer.valueOf(i));

@@ -58,7 +58,7 @@ public class FtcDriverStationActivityPortrait extends FtcDriverStationActivityBa
       RobotLog.ii("DriverStation", "Show match logging UI");
       this.matchNumField.setVisibility(View.VISIBLE);
       this.matchNumField.setEnabled(true);
-      this.findViewById(2131230986).setVisibility(View.VISIBLE);
+      this.findViewById(R.id.matchNumLabel).setVisibility(View.VISIBLE);
    }
 
    protected int getMatchNumber() {
@@ -74,8 +74,8 @@ public class FtcDriverStationActivityPortrait extends FtcDriverStationActivityBa
    }
 
    public void subclassOnCreate() {
-      this.setContentView(2131427364);
-      this.matchNumField = (EditText)this.findViewById(2131230987);
+      this.setContentView(R.layout.activity_ftc_driver_station);
+      this.matchNumField = (EditText)this.findViewById(R.id.matchNumTextField);
    }
 
    public void updateBatteryStatus(BatteryChecker.BatteryStatus var1) {
