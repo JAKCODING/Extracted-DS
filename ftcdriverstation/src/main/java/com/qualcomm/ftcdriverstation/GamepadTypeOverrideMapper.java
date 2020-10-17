@@ -1,173 +1,184 @@
 package com.qualcomm.ftcdriverstation;
 
-import android.content.*;
-import android.preference.*;
-import android.util.*;
-import java.util.*;
-import com.qualcomm.robotcore.hardware.*;
-import com.qualcomm.hardware.logitech.*;
-import com.qualcomm.hardware.microsoft.*;
-import com.qualcomm.hardware.sony.*;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.ArraySet;
+import com.qualcomm.hardware.logitech.LogitechGamepadF310;
+import com.qualcomm.hardware.microsoft.MicrosoftGamepadXbox360;
+import com.qualcomm.hardware.sony.SonyGamepadPS4;
+import com.qualcomm.robotcore.hardware.Gamepad;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
-public class GamepadTypeOverrideMapper
-{
+public class GamepadTypeOverrideMapper {
     static final String KEY_GAMEPAD_MAPPING = "GAMEPAD_MAPPING";
     Context context;
     Set<String> serializedEntries;
     SharedPreferences sharedPreferences;
 
-    GamepadTypeOverrideMapper(final Context context) {
-        super();
-        this.context = context;
-        final SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        this.sharedPreferences = defaultSharedPreferences;
-        this.serializedEntries = (Set<String>)defaultSharedPreferences.getStringSet("GAMEPAD_MAPPING", (Set)null);
-    }
-
-    static String checkForClash(final Set<String> set, final GamepadTypeOverrideEntry gamepadTypeOverrideEntry) {
-        for (final String s : set) {
-            if (GamepadTypeOverrideEntry.fromString(s).usbIdsMatch(gamepadTypeOverrideEntry)) {
-                return s;
-            }
-        }
-        return null;
-    }
-
-    void addOrUpdate(final GamepadTypeOverrideEntry gamepadTypeOverrideEntry) {
-        synchronized (this) {
-            final Set stringSet = this.sharedPreferences.getStringSet("GAMEPAD_MAPPING", (Set)null);
-            this.serializedEntries = (Set<String>)stringSet;
-            if (stringSet != null) {
-                final String checkForClash = checkForClash(stringSet, gamepadTypeOverrideEntry);
-                if (checkForClash != null) {
-                    this.serializedEntries.remove(checkForClash);
-                }
-                this.serializedEntries.add(gamepadTypeOverrideEntry.toString());
-            }
-            else {
-                (this.serializedEntries = (Set<String>)new ArraySet()).add(gamepadTypeOverrideEntry.toString());
-            }
-            this.sharedPreferences.edit().putStringSet("GAMEPAD_MAPPING", (Set)this.serializedEntries).commit();
-        }
-    }
-
-    void delete(final GamepadTypeOverrideEntry gamepadTypeOverrideEntry) {
-        synchronized (this) {
-            final Set stringSet = this.sharedPreferences.getStringSet("GAMEPAD_MAPPING", (Set)null);
-            this.serializedEntries = (Set<String>)stringSet;
-            if (stringSet == null) {
-                return;
-            }
-            boolean b = false;
-            final Iterator<String> iterator = stringSet.iterator();
-            while (iterator.hasNext()) {
-                if (iterator.next().equals(gamepadTypeOverrideEntry.toString())) {
-                    b = true;
-                }
-            }
-            if (b) {
-                this.serializedEntries.remove(gamepadTypeOverrideEntry.toString());
-                this.sharedPreferences.edit().putStringSet("GAMEPAD_MAPPING", (Set)this.serializedEntries).commit();
-                return;
-            }
-            throw new IllegalArgumentException();
-        }
-    }
-
-    ArrayList<GamepadTypeOverrideEntry> getEntries() {
-        synchronized (this) {
-            final Set stringSet = this.sharedPreferences.getStringSet("GAMEPAD_MAPPING", (Set)null);
-            this.serializedEntries = (Set<String>)stringSet;
-            if (stringSet == null) {
-                return new ArrayList<GamepadTypeOverrideEntry>();
-            }
-            final ArrayList<GamepadTypeOverrideEntry> list = new ArrayList<GamepadTypeOverrideEntry>();
-            final Iterator<String> iterator = this.serializedEntries.iterator();
-            while (iterator.hasNext()) {
-                list.add(GamepadTypeOverrideEntry.fromString(iterator.next()));
-            }
-            return list;
-        }
-    }
-
-    GamepadTypeOverrideEntry getEntryFor(final int n, final int n2) {
-        synchronized (this) {
-            for (final GamepadTypeOverrideEntry gamepadTypeOverrideEntry : this.getEntries()) {
-                if (gamepadTypeOverrideEntry.usbIdsMatch(n, n2)) {
-                    return gamepadTypeOverrideEntry;
-                }
-            }
-            return null;
-        }
-    }
-
-    void setEntries(final ArrayList<GamepadTypeOverrideEntry> list) {
-        synchronized (this) {
-            if (this.serializedEntries != null) {
-                this.serializedEntries.clear();
-            }
-            else {
-                this.serializedEntries = (Set<String>)new ArraySet();
-            }
-            if (list.isEmpty()) {
-                this.sharedPreferences.edit().remove("GAMEPAD_MAPPING").commit();
-            }
-            else {
-                final Iterator<GamepadTypeOverrideEntry> iterator = list.iterator();
-                while (iterator.hasNext()) {
-                    this.serializedEntries.add(iterator.next().toString());
-                }
-                this.sharedPreferences.edit().remove("GAMEPAD_MAPPING").commit();
-                this.sharedPreferences.edit().putStringSet("GAMEPAD_MAPPING", (Set)this.serializedEntries).commit();
-            }
-        }
-    }
-
-    static class GamepadTypeOverrideEntry
-    {
+    static class GamepadTypeOverrideEntry {
         Gamepad.Type mappedType;
         int pid;
         int vid;
 
-        GamepadTypeOverrideEntry(final int vid, final int pid, final Gamepad.Type mappedType) {
-            super();
-            this.vid = vid;
-            this.pid = pid;
-            this.mappedType = mappedType;
+        GamepadTypeOverrideEntry(int i, int i2, Gamepad.Type type) {
+            this.vid = i;
+            this.pid = i2;
+            this.mappedType = type;
         }
 
-        static GamepadTypeOverrideEntry fromString(final String s) {
-            final String[] split = s.split(":");
-            return new GamepadTypeOverrideEntry(Integer.valueOf(split[0]), Integer.valueOf(split[1]), Gamepad.Type.valueOf(split[2]));
+        public boolean equals(GamepadTypeOverrideEntry gamepadTypeOverrideEntry) {
+            boolean z = false;
+            boolean z2 = (this.vid == gamepadTypeOverrideEntry.vid) & true;
+            if (this.pid == gamepadTypeOverrideEntry.pid) {
+                z = true;
+            }
+            return this.mappedType.equals(gamepadTypeOverrideEntry.mappedType) & z2 & z;
         }
 
-        Gamepad createGamepad() {
-            final int n = this.mappedType.ordinal();
-            if (n == 1) {
+        public boolean usbIdsMatch(GamepadTypeOverrideEntry gamepadTypeOverrideEntry) {
+            boolean z = false;
+            boolean z2 = (this.vid == gamepadTypeOverrideEntry.vid) & true;
+            if (this.pid == gamepadTypeOverrideEntry.pid) {
+                z = true;
+            }
+            return z2 & z;
+        }
+
+        public boolean usbIdsMatch(int i, int i2) {
+            boolean z = false;
+            boolean z2 = (this.vid == i) & true;
+            if (this.pid == i2) {
+                z = true;
+            }
+            return z2 & z;
+        }
+
+        /* access modifiers changed from: package-private */
+        public Gamepad createGamepad() {
+            int i = this.mappedType.ordinal();
+            if (i == 1) {
                 return new LogitechGamepadF310();
             }
-            if (n == 2) {
+            if (i == 2) {
                 return new MicrosoftGamepadXbox360();
             }
-            if (n == 3) {
+            if (i == 3) {
                 return new SonyGamepadPS4();
             }
             throw new IllegalStateException();
         }
 
-        public boolean equals(final GamepadTypeOverrideEntry gamepadTypeOverrideEntry) {
-            final int vid = this.vid;
-            final int vid2 = gamepadTypeOverrideEntry.vid;
-            boolean b = false;
-            final boolean b2 = vid == vid2;
-            if (this.pid == gamepadTypeOverrideEntry.pid) {
-                b = true;
-            }
-            return this.mappedType.equals(gamepadTypeOverrideEntry.mappedType) & (b2 & true & b);
+        public String toString() {
+            return String.format("%d:%d:%s", new Object[]{Integer.valueOf(this.vid), Integer.valueOf(this.pid), this.mappedType.toString()});
         }
 
-        @Override
-        public String toString() {
-            return String.format("%d:%d:%s", this.vid, this.pid, this.mappedType.toString());
+        static GamepadTypeOverrideEntry fromString(String str) {
+            String[] split = str.split(":");
+            return new GamepadTypeOverrideEntry(Integer.valueOf(split[0]).intValue(), Integer.valueOf(split[1]).intValue(), Gamepad.Type.valueOf(split[2]));
         }
+    }
+
+
+
+    GamepadTypeOverrideMapper(Context context2) {
+        this.context = context2;
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context2);
+        this.sharedPreferences = defaultSharedPreferences;
+        this.serializedEntries = defaultSharedPreferences.getStringSet(KEY_GAMEPAD_MAPPING, (Set) null);
+    }
+
+    static String checkForClash(Set<String> set, GamepadTypeOverrideEntry gamepadTypeOverrideEntry) {
+        for (String next : set) {
+            if (GamepadTypeOverrideEntry.fromString(next).usbIdsMatch(gamepadTypeOverrideEntry)) {
+                return next;
+            }
+        }
+        return null;
+    }
+
+    /* access modifiers changed from: package-private */
+    public synchronized void setEntries(ArrayList<GamepadTypeOverrideEntry> arrayList) {
+        if (this.serializedEntries != null) {
+            this.serializedEntries.clear();
+        } else {
+            this.serializedEntries = new ArraySet();
+        }
+        if (arrayList.isEmpty()) {
+            this.sharedPreferences.edit().remove(KEY_GAMEPAD_MAPPING).commit();
+        } else {
+            Iterator<GamepadTypeOverrideEntry> it = arrayList.iterator();
+            while (it.hasNext()) {
+                this.serializedEntries.add(it.next().toString());
+            }
+            this.sharedPreferences.edit().remove(KEY_GAMEPAD_MAPPING).commit();
+            this.sharedPreferences.edit().putStringSet(KEY_GAMEPAD_MAPPING, this.serializedEntries).commit();
+        }
+    }
+
+    /* access modifiers changed from: package-private */
+    public synchronized void addOrUpdate(GamepadTypeOverrideEntry gamepadTypeOverrideEntry) {
+        Set<String> stringSet = this.sharedPreferences.getStringSet(KEY_GAMEPAD_MAPPING, (Set) null);
+        this.serializedEntries = stringSet;
+        if (stringSet != null) {
+            String checkForClash = checkForClash(stringSet, gamepadTypeOverrideEntry);
+            if (checkForClash != null) {
+                this.serializedEntries.remove(checkForClash);
+            }
+            this.serializedEntries.add(gamepadTypeOverrideEntry.toString());
+        } else {
+            ArraySet arraySet = new ArraySet();
+            this.serializedEntries = arraySet;
+            arraySet.add(gamepadTypeOverrideEntry.toString());
+        }
+        this.sharedPreferences.edit().putStringSet(KEY_GAMEPAD_MAPPING, this.serializedEntries).commit();
+    }
+
+    /* access modifiers changed from: package-private */
+    public synchronized GamepadTypeOverrideEntry getEntryFor(int i, int i2) {
+        Iterator<GamepadTypeOverrideEntry> it = getEntries().iterator();
+        while (it.hasNext()) {
+            GamepadTypeOverrideEntry next = it.next();
+            if (next.usbIdsMatch(i, i2)) {
+                return next;
+            }
+        }
+        return null;
+    }
+
+    /* access modifiers changed from: package-private */
+    public synchronized ArrayList<GamepadTypeOverrideEntry> getEntries() {
+        Set<String> stringSet = this.sharedPreferences.getStringSet(KEY_GAMEPAD_MAPPING, (Set) null);
+        this.serializedEntries = stringSet;
+        if (stringSet == null) {
+            return new ArrayList<>();
+        }
+        ArrayList<GamepadTypeOverrideEntry> arrayList = new ArrayList<>();
+        for (String fromString : this.serializedEntries) {
+            arrayList.add(GamepadTypeOverrideEntry.fromString(fromString));
+        }
+        return arrayList;
+    }
+
+    /* access modifiers changed from: package-private */
+    public synchronized void delete(GamepadTypeOverrideEntry gamepadTypeOverrideEntry) {
+        Set<String> stringSet = this.sharedPreferences.getStringSet(KEY_GAMEPAD_MAPPING, (Set) null);
+        this.serializedEntries = stringSet;
+        if (stringSet != null) {
+            boolean z = false;
+            for (String equals : stringSet) {
+                if (equals.equals(gamepadTypeOverrideEntry.toString())) {
+                    z = true;
+                }
+            }
+            if (z) {
+                this.serializedEntries.remove(gamepadTypeOverrideEntry.toString());
+                this.sharedPreferences.edit().putStringSet(KEY_GAMEPAD_MAPPING, this.serializedEntries).commit();
+                return;
+            }
+            throw new IllegalArgumentException();
+        }
+    }
 }

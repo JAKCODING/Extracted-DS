@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.EventLoopManager;
 import com.qualcomm.robotcore.robot.*;
 import org.firstinspires.ftc.ftccommon.internal.*;
 
+import android.annotation.SuppressLint;
 import android.app.admin.NetworkEvent;
 import android.content.*;
 import org.firstinspires.ftc.robotcore.internal.opmode.*;
@@ -24,7 +25,7 @@ import org.firstinspires.ftc.driverstation.internal.*;
 import org.firstinspires.ftc.robotcore.internal.network.*;
 import android.net.wifi.*;
 import org.firstinspires.ftc.ftccommon.external.*;
-import org.firstinspires.ftc.robotcore.internal.ui.InputManager;
+import android.hardware.input.InputManager;
 
 import com.qualcomm.robotcore.wifi.*;
 import android.view.*;
@@ -895,6 +896,7 @@ public abstract class FtcDriverStationActivityBase extends ThemedActivity implem
       super.onConfigurationChanged(configuration);
    }
 
+   @SuppressLint("ServiceCast")
    protected void onCreate(final Bundle bundle) {
 
          super.onCreate(bundle);
@@ -1005,7 +1007,7 @@ public abstract class FtcDriverStationActivityBase extends ThemedActivity implem
          batteryChecker2.startBatteryMonitoring();
          resetBatteryStats();
          pingStatus((int) R.string.ping_status_no_heartbeat);
-         this.mInputManager = (InputManager) getSystemService(Context.INPUT_SERVICE);
+         this.mInputManager = (InputManager) this.getSystemService(Context.INPUT_SERVICE);
          this.networkConnectionHandler.pushNetworkConnectionCallback(this);
          this.networkConnectionHandler.pushReceiveLoopCallback(this);
          startOrRestartNetwork();
