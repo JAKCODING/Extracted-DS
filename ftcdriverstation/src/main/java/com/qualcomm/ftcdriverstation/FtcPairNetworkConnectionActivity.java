@@ -282,7 +282,7 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
       var1.apply();
    }
 
-   public static class PeerRadioButton extends androidx.appcompat.widget.AppCompatRadioButton {
+   public static class PeerRadioButton extends RadioButton {
       private String deviceIdentity = "";
 
       public PeerRadioButton(Context var1) {
