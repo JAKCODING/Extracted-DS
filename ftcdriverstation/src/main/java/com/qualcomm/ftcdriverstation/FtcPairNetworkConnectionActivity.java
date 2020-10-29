@@ -65,9 +65,9 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
    }
 
    private void updateDevicesList() {
-      RadioGroup var1 = (RadioGroup)this.findViewById(R.id.radioGroupDevices);
-      var1.clearCheck();
-      var1.removeAllViews();
+      RadioGroup rGroup = this.findViewById(R.id.radioGroupDevices);
+      rGroup.clearCheck();
+      rGroup.removeAllViews();
       FtcPairNetworkConnectionActivity.PeerRadioButton var2 = new FtcPairNetworkConnectionActivity.PeerRadioButton(this);
       String var3 = this.getString(R.string.connection_owner_default);
       var2.setId(0);
@@ -79,7 +79,7 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
          var2.setChecked(true);
       }
 
-      var1.addView(var2);
+      rGroup.addView(var2);
       Object var9 = new TreeMap();
       if (this.networkConnection.getNetworkType() == NetworkType.WIFIDIRECT) {
          var9 = this.buildMap(((WifiDirectAssistant)this.networkConnection).getPeers());
@@ -128,7 +128,7 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
          }
 
          var10.setOnClickListener(this);
-         var1.addView(var10);
+         rGroup.addView(var10);
          ++var5;
       }
    }
