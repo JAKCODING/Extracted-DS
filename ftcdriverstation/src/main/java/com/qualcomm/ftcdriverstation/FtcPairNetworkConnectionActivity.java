@@ -46,115 +46,100 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
    private int teamNum;
    private TextView textViewSoftApPasswordLabel;
 
-   private int getTeamNumber(String var1) {
-      int var2 = var1.indexOf(45);
-      int var3 = 0;
-      if (var2 != -1) {
-         var1 = var1.substring(0, var2);
-
-         try {
-            var2 = Integer.parseInt(var1);
-         } catch (NumberFormatException var4) {
-            return var3;
-         }
-
-         var3 = var2;
+   private int getTeamNumber(String name)
+   {
+      int dashPos = name.indexOf("-");
+      if (dashPos == -1)
+      {
+         return 0;
       }
 
-      return var3;
+      try
+      {
+         return Integer.parseInt(name.substring(0, dashPos));
+      }
+      catch (NumberFormatException e)
+      {
+         return 0;
+      }
    }
 
-   private void updateDevicesList() {
-      RadioGroup rGroup = this.findViewById(R.id.radioGroupDevices);
-      rGroup.clearCheck();
-      rGroup.removeAllViews();
-      FtcPairNetworkConnectionActivity.PeerRadioButton var2 = new FtcPairNetworkConnectionActivity.PeerRadioButton(this);
-      String var3 = this.getString(R.string.connection_owner_default);
-      var2.setId(0);
-      var2.setText("None\nDo not pair with any device");
-      var2.setPadding(0, 0, 0, 24);
-      var2.setOnClickListener(this);
-      var2.setDeviceIdentity(var3);
-      if (this.connectionOwnerIdentity.equalsIgnoreCase(var3)) {
-         var2.setChecked(true);
+   private void updateDevicesList()
+   {
+      RadioGroup rg = findViewById(R.id.radioGroupDevices);
+      rg.clearCheck();
+      rg.removeAllViews();
+      PeerRadioButton b = new PeerRadioButton(this);
+      String none = getString(R.string.connection_owner_default);
+      b.setId(0);
+      b.setText("None\nDo not pair with any device");
+      b.setPadding(0, 0, 0, 24);
+      b.setOnClickListener(this);
+      b.setDeviceIdentity(none);
+      if (connectionOwnerIdentity.equalsIgnoreCase(none))
+      {
+         b.setChecked(true);
       }
-
-      rGroup.addView(var2);
-      Object var9 = new TreeMap();
-      if (this.networkConnection.getNetworkType() == NetworkType.WIFIDIRECT) {
-         var9 = this.buildMap(((WifiDirectAssistant)this.networkConnection).getPeers());
-      } else if (this.networkConnection.getNetworkType() == NetworkType.SOFTAP) {
-         var9 = this.buildResultsMap(((SoftApAssistant)this.networkConnection).getScanResults());
+      rg.addView(b);
+      int i = 1;
+      Map<String, String> namesAndAddresses = new TreeMap<>();
+      if (networkConnection.getNetworkType() == NetworkType.WIFIDIRECT)
+      {
+         namesAndAddresses = buildMap(((WifiDirectAssistant) networkConnection).getPeers());
       }
-
-      Iterator var4 = ((Map)var9).keySet().iterator();
-      int var5 = 1;
-
-      while(true) {
-         StringBuilder var6;
-         do {
-            if (!var4.hasNext()) {
-               return;
+      else if (networkConnection.getNetworkType() == NetworkType.SOFTAP)
+      {
+         namesAndAddresses = buildResultsMap(((SoftApAssistant) networkConnection).getScanResults());
+      }
+      for (String deviceName : namesAndAddresses.keySet())
+      {
+         if (!filterForTeam || deviceName.contains(teamNum + "-") || deviceName.startsWith("0000-"))
+         {
+            String deviceIdentity = namesAndAddresses.get(deviceName);
+            b = new PeerRadioButton(this);
+            int i2 = i + 1;
+            b.setId(i);
+            String display = "";
+            if (networkConnection.getNetworkType() == NetworkType.WIFIDIRECT)
+            {
+               display = deviceName + "\n" + deviceIdentity;
             }
-
-            var3 = (String)var4.next();
-            if (!this.filterForTeam) {
-               break;
+            else if (networkConnection.getNetworkType() == NetworkType.SOFTAP)
+            {
+               display = deviceName;
             }
-
-            var6 = new StringBuilder();
-            var6.append(this.teamNum);
-            var6.append("-");
-         } while(!var3.contains(var6.toString()) && !var3.startsWith("0000-"));
-
-         String var7 = (String)((Map)var9).get(var3);
-         FtcPairNetworkConnectionActivity.PeerRadioButton var10 = new FtcPairNetworkConnectionActivity.PeerRadioButton(this);
-         var10.setId(var5);
-         if (this.networkConnection.getNetworkType() == NetworkType.WIFIDIRECT) {
-            StringBuilder var8 = new StringBuilder();
-            var8.append(var3);
-            var8.append("\n");
-            var8.append(var7);
-            var3 = var8.toString();
-         } else if (this.networkConnection.getNetworkType() != NetworkType.SOFTAP) {
-            var3 = "";
+            b.setText(display);
+            b.setPadding(0, 0, 0, 24);
+            b.setDeviceIdentity(deviceIdentity);
+            if (deviceIdentity.equalsIgnoreCase(connectionOwnerIdentity))
+            {
+               b.setChecked(true);
+            }
+            b.setOnClickListener(this);
+            rg.addView(b);
+            i = i2;
          }
-
-         var10.setText(var3);
-         var10.setPadding(0, 0, 0, 24);
-         var10.setDeviceIdentity(var7);
-         if (var7.equalsIgnoreCase(this.connectionOwnerIdentity)) {
-            var10.setChecked(true);
-         }
-
-         var10.setOnClickListener(this);
-         rGroup.addView(var10);
-         ++var5;
       }
    }
 
-   public Map buildMap(List var1) {
-      TreeMap var2 = new TreeMap();
-      Iterator var3 = var1.iterator();
-
-      while(var3.hasNext()) {
-         WifiP2pDevice var4 = (WifiP2pDevice)var3.next();
-         var2.put(PreferenceRemoterDS.getInstance().getDeviceNameForWifiP2pGroupOwner(var4.deviceName), var4.deviceAddress);
+   public Map<String, String> buildMap(List<WifiP2pDevice> peers)
+   {
+      Map<String, String> map = new TreeMap<>();
+      for (WifiP2pDevice peer : peers)
+      {
+         map.put(PreferenceRemoterDS.getInstance().getDeviceNameForWifiP2pGroupOwner(peer.deviceName), peer.deviceAddress);
       }
-
-      return var2;
+      return map;
    }
 
-   public Map buildResultsMap(List var1) {
-      TreeMap var2 = new TreeMap();
-      Iterator var4 = var1.iterator();
-
-      while(var4.hasNext()) {
-         ScanResult var3 = (ScanResult)var4.next();
-         var2.put(var3.SSID, var3.SSID);
+   public Map<String, String> buildResultsMap(List<ScanResult> results)
+   {
+      Map<String, String> map = new TreeMap<>();
+      for (ScanResult result : results)
+      {
+         map.put(result.SSID, result.SSID);
       }
-
-      return var2;
+      return map;
    }
 
    protected FrameLayout getBackBar() {
@@ -186,100 +171,106 @@ public class FtcPairNetworkConnectionActivity extends BaseActivity implements On
 
    }
 
-   protected void onCreate(Bundle var1) {
-      super.onCreate(var1);
-      this.setContentView(R.layout.activity_ftc_network_connection);
-      NetworkType var2 = NetworkType.fromString(PreferenceManager.getDefaultSharedPreferences(this.getBaseContext()).getString("NETWORK_CONNECTION_TYPE", NetworkType.globalDefaultAsString()));
-      this.editTextSoftApPassword = (EditText)this.findViewById(R.id.editTextSoftApPassword);
-      this.textViewSoftApPasswordLabel = (TextView)this.findViewById(R.id.textViewSoftApPasswordLabel);
-      NetworkConnection var6 = NetworkConnectionFactory.getNetworkConnection(var2, this.getBaseContext());
-      this.networkConnection = var6;
-      String var7 = var6.getDeviceName();
-      if (var7 != "") {
-         this.teamNum = this.getTeamNumber(var7);
-      } else {
-         this.teamNum = 0;
-         var7 = this.getString(R.string.wifi_direct_name_unknown);
+   protected void onCreate(Bundle savedInstanceState)
+   {
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.activity_ftc_network_connection);
+      String networkType = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString(NetworkConnectionFactory.NETWORK_CONNECTION_TYPE, NetworkType.WIFIDIRECT.toString());
+      editTextSoftApPassword = findViewById(R.id.editTextSoftApPassword);
+      textViewSoftApPasswordLabel = findViewById(R.id.textViewSoftApPasswordLabel);
+      networkConnection = NetworkConnectionFactory.getNetworkConnection(NetworkConnectionFactory.getTypeFromString(networkType), getBaseContext());
+      String deviceName = networkConnection.getDeviceName();
+      if (deviceName.isEmpty())
+      {
+         teamNum = 0;
+         deviceName = getString(R.string.wifi_direct_name_unknown);
       }
-
-      TextView var3 = (TextView)this.findViewById(R.id.textWifiInstructions);
-      TextView var4 = (TextView)this.findViewById(R.id.textViewWifiName);
-      TextView var5 = (TextView)this.findViewById(R.id.textViewWifiNameLabel);
-      if (var2 == NetworkType.WIFIDIRECT) {
-         var3.setText(this.getString(R.string.pair_instructions));
-         var4.setVisibility(View.VISIBLE);
-         var4.setText(var7);
-         var5.setVisibility(View.VISIBLE);
-      } else if (var2 == NetworkType.SOFTAP) {
-         var3.setText(this.getString(R.string.softap_instructions));
-         var4.setVisibility(View.INVISIBLE);
-         var5.setVisibility(View.INVISIBLE);
+      else
+      {
+         teamNum = getTeamNumber(deviceName);
       }
-
-      ((Switch)this.findViewById(R.id.wifi_filter)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
-         public void onCheckedChanged(CompoundButton var1, boolean var2) {
-            if (var2) {
-               FtcPairNetworkConnectionActivity.this.filterForTeam = true;
-            } else {
-               FtcPairNetworkConnectionActivity.this.filterForTeam = false;
-            }
-
-            FtcPairNetworkConnectionActivity.this.updateDevicesList();
+      TextView instructions = findViewById(R.id.textWifiInstructions);
+      TextView wifiName = findViewById(R.id.textViewWifiName);
+      TextView label = findViewById(R.id.textViewWifiNameLabel);
+      if (networkType.equalsIgnoreCase(NetworkType.WIFIDIRECT.toString()))
+      {
+         instructions.setText(getString(R.string.pair_instructions));
+         wifiName.setVisibility(View.VISIBLE);
+         wifiName.setText(deviceName);
+         label.setVisibility(View.VISIBLE);
+      }
+      else if (networkType.equalsIgnoreCase(NetworkType.SOFTAP.toString()))
+      {
+         instructions.setText(getString(R.string.softap_instructions));
+         wifiName.setVisibility(View.INVISIBLE);
+         label.setVisibility(View.INVISIBLE);
+      }
+      ((Switch) findViewById(R.id.wifi_filter)).setOnCheckedChangeListener(new OnCheckedChangeListener()
+      {
+         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+         {
+            filterForTeam = isChecked;
+            updateDevicesList();
          }
       });
    }
 
-   public CallbackResult onNetworkConnectionEvent(NetworkConnection.NetworkEvent var1) {
-      CallbackResult var2 = CallbackResult.NOT_HANDLED;
-      CallbackResult var3;
-      if (var1.ordinal() != 1) {
-         var3 = var2;
-      } else {
-         this.updateDevicesList();
-         var3 = CallbackResult.HANDLED;
+   public CallbackResult onNetworkConnectionEvent(NetworkConnection.NetworkEvent event)
+   {
+      CallbackResult result = CallbackResult.NOT_HANDLED;
+      switch (event)
+      {
+         case PEERS_AVAILABLE:
+            updateDevicesList();
+            return CallbackResult.HANDLED;
+         default:
+            return result;
       }
-
-      return var3;
    }
 
-   public void onStart() {
+   public void onStart()
+   {
       super.onStart();
-      RobotLog.ii("FtcPairNetworkConnection", "Starting Pairing with Driver Station activity");
-      SharedPreferences var1 = PreferenceManager.getDefaultSharedPreferences(this);
-      this.sharedPref = var1;
-      this.connectionOwnerIdentity = var1.getString(this.getString(R.string.pref_connection_owner_identity), this.getString(R.string.connection_owner_default));
-      TextView var2 = (TextView)this.findViewById(R.id.textViewSoftApPasswordInstructions);
-      if (this.networkConnection.getNetworkType() == NetworkType.SOFTAP) {
-         this.connectionOwnerPassword = this.sharedPref.getString(this.getString(R.string.pref_connection_owner_password), this.getString(R.string.connection_owner_password_default));
-         this.textViewSoftApPasswordLabel.setVisibility(View.VISIBLE);
-         this.editTextSoftApPassword.setVisibility(View.VISIBLE);
-         this.editTextSoftApPassword.setText(this.connectionOwnerPassword);
-         var2.setVisibility(View.VISIBLE);
-      } else {
-         this.textViewSoftApPasswordLabel.setVisibility(View.INVISIBLE);
-         this.editTextSoftApPassword.setVisibility(View.INVISIBLE);
-         var2.setVisibility(View.INVISIBLE);
+      RobotLog.ii(TAG, "Starting Pairing with Driver Station activity");
+      sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+      connectionOwnerIdentity = sharedPref.getString(getString(R.string.pref_connection_owner_identity), getString(R.string.connection_owner_default));
+      TextView softApPasswordInstructions = findViewById(R.id.textViewSoftApPasswordInstructions);
+      if (networkConnection.getNetworkType() == NetworkType.SOFTAP)
+      {
+         connectionOwnerPassword = sharedPref.getString(getString(R.string.pref_connection_owner_password), getString(R.string.connection_owner_password_default));
+         textViewSoftApPasswordLabel.setVisibility(View.VISIBLE);
+         editTextSoftApPassword.setVisibility(View.VISIBLE);
+         editTextSoftApPassword.setText(connectionOwnerPassword);
+         softApPasswordInstructions.setVisibility(View.VISIBLE);
       }
-
-      this.networkConnection.enable();
-      this.networkConnection.setCallback(this);
-      this.updateDevicesList();
-      this.discoveryFuture = ThreadPool.getDefaultScheduler().scheduleAtFixedRate(new Runnable() {
-         public void run() {
-            FtcPairNetworkConnectionActivity.this.networkConnection.discoverPotentialConnections();
+      else
+      {
+         textViewSoftApPasswordLabel.setVisibility(View.INVISIBLE);
+         editTextSoftApPassword.setVisibility(View.INVISIBLE);
+         softApPasswordInstructions.setVisibility(View.INVISIBLE);
+      }
+      networkConnection.enable();
+      networkConnection.setCallback(this);
+      updateDevicesList();
+      discoveryFuture = ThreadPool.getDefaultScheduler().scheduleAtFixedRate(new Runnable()
+      {
+         public void run()
+         {
+            networkConnection.discoverPotentialConnections();
          }
-      }, 0L, 10000L, TimeUnit.MILLISECONDS);
+      }, 0, 10000, TimeUnit.MILLISECONDS);
    }
 
-   public void onStop() {
+   public void onStop()
+   {
       super.onStop();
-      this.discoveryFuture.cancel(false);
-      this.networkConnection.cancelPotentialConnections();
-      this.networkConnection.disable();
-      this.connectionOwnerPassword = this.editTextSoftApPassword.getText().toString();
-      Editor var1 = this.sharedPref.edit();
-      var1.putString(this.getString(R.string.pref_connection_owner_password), this.connectionOwnerPassword);
-      var1.apply();
+      discoveryFuture.cancel(false);
+      networkConnection.cancelPotentialConnections();
+      networkConnection.disable();
+      connectionOwnerPassword = editTextSoftApPassword.getText().toString();
+      Editor editor = sharedPref.edit();
+      editor.putString(getString(R.string.pref_connection_owner_password), connectionOwnerPassword);
+      editor.apply();
    }
 
    public static class PeerRadioButton extends RadioButton {

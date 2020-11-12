@@ -119,8 +119,9 @@
             android:name="com.qualcomm.ftccommon.configuration.FtcLoadFileActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true"
-            android:label="@string/configure_activity" />
+            android:label="@string/configure_activity" /> -->
         <activity android:name="com.qualcomm.ftcdriverstation.FtcWirelessApNetworkConnectionActivity" />
+        <!--
         <activity
             android:name="org.firstinspires.ftc.ftccommon.internal.ProgramAndManageActivity"
             android:configChanges="orientation|screenSize"
